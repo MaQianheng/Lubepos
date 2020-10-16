@@ -1,5 +1,10 @@
 .App {
-  text-align: center;
+  /*text-align: center;*/
+}
+
+.App .main {
+  width: 100%;
+  float: right;
 }
 
 .App-logo {
@@ -36,3 +41,19 @@
     transform: rotate(360deg);
   }
 }
+
+.rotate-open {
+  transform: rotate(90deg);
+}
+
+.card>i {
+  background-image: url("assets/angle-right-solid.svg");
+  background-size: 28px 28px;
+  height: 28px;
+  width: 28px;
+  top: 10px;
+  left: 5px;
+  position: absolute;
+  transition: all 0.5s;
+}
+

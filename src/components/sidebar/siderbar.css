@@ -1,0 +1,58 @@
+.sidebar {
+    position: fixed;
+    width: 260px;
+    left: 0px;
+    height: 100%;
+    background: linear-gradient(to bottom, #8E2DE2 0%, #4A00E0 100%);
+    z-index: 1;
+    opacity: 0.9;
+}
+
+.logo {
+    width: 90%;
+    margin: 15px auto;
+    border-bottom: 1px solid gray;
+    padding: 10px;
+}
+
+.logo>.row>div:nth-child(1) {
+    background-image: url("../../assets/theone-logo-s.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    left: 15px;
+}
+
+.logo>.row>div:nth-child(2) a {
+    font-size: 25px;
+    padding: 0px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.sidebar-menu a {
+    color: #fff;
+    margin: 3px auto;
+    padding: 10px;
+    width: 90%;
+    text-align: left;
+    transition: all .4s;
+    font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 500;
+}
+
+.sidebar-menu a:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.13);
+    opacity: 1;
+}
+
+.active {
+    background: rgba(255, 255, 255, 0.13);
+    opacity: 1;
+}
+
+/*.backgroud {*/
+/*    background-image: url("../../assets/car_002.jpg");*/
+/*    height: 100%;*/
+/*    width: 100%;*/
+/*}*/
