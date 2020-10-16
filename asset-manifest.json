@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/Lubepos/static/css/main.7b98ad2e.chunk.css",
+    "main.js": "/Lubepos/static/js/main.ae5e2259.chunk.js",
+    "main.js.map": "/Lubepos/static/js/main.ae5e2259.chunk.js.map",
+    "runtime-main.js": "/Lubepos/static/js/runtime-main.aedf355d.js",
+    "runtime-main.js.map": "/Lubepos/static/js/runtime-main.aedf355d.js.map",
+    "static/css/2.d9ad5f5c.chunk.css": "/Lubepos/static/css/2.d9ad5f5c.chunk.css",
+    "static/js/2.d836c4ff.chunk.js": "/Lubepos/static/js/2.d836c4ff.chunk.js",
+    "static/js/2.d836c4ff.chunk.js.map": "/Lubepos/static/js/2.d836c4ff.chunk.js.map",
+    "index.html": "/Lubepos/index.html",
+    "precache-manifest.4d9c413aa78ce7cefecd755682d6e393.js": "/Lubepos/precache-manifest.4d9c413aa78ce7cefecd755682d6e393.js",
+    "service-worker.js": "/Lubepos/service-worker.js",
+    "static/css/2.d9ad5f5c.chunk.css.map": "/Lubepos/static/css/2.d9ad5f5c.chunk.css.map",
+    "static/css/main.7b98ad2e.chunk.css.map": "/Lubepos/static/css/main.7b98ad2e.chunk.css.map",
+    "static/js/2.d836c4ff.chunk.js.LICENSE.txt": "/Lubepos/static/js/2.d836c4ff.chunk.js.LICENSE.txt",
+    "static/media/App.css": "/Lubepos/static/media/angle-right-solid.fbb21171.svg",
+    "static/media/logo.svg": "/Lubepos/static/media/logo.5d5d9eef.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.aedf355d.js",
+    "static/css/2.d9ad5f5c.chunk.css",
+    "static/js/2.d836c4ff.chunk.js",
+    "static/css/main.7b98ad2e.chunk.css",
+    "static/js/main.ae5e2259.chunk.js"
+  ]
+}
