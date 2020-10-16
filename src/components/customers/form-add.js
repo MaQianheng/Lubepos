@@ -74,12 +74,6 @@ class FormAdd extends React.Component {
                         <div className="alert alert-danger" role="alert" id="div-alert" style={{position: "relative",top: "20px", display: "none"}}></div>
                     </div>
                 </Form.Row>
-                <br/>
-                <Form.Row>
-
-                </Form.Row>
-                <br/>
-
 
             </Form>
         )

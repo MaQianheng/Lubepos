@@ -3,7 +3,7 @@ import CarFormAdd from "./form-add";
 import {Card} from "react-bootstrap";
 import $ from "jquery";
 
-class CardCars extends React.Component {
+class CardFormWrapperCars extends React.Component {
     handleClick = (e) => {
         $(e.target.nextElementSibling).slideToggle();
         $("#i-angle").toggleClass("rotate-open");
@@ -22,4 +22,4 @@ class CardCars extends React.Component {
     }
 }
 
-export default CardCars;
+export default CardFormWrapperCars;

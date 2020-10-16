@@ -3,7 +3,7 @@ import CarFormAdd from "./form-add";
 import {Card} from "react-bootstrap";
 import $ from "jquery";
 
-class ProductsCars extends React.Component {
+class CardFormWrapperProducts extends React.Component {
     handleClick = (e) => {
         $(e.target.nextElementSibling).slideToggle();
         $("#i-angle").toggleClass("rotate-open");
@@ -13,7 +13,7 @@ class ProductsCars extends React.Component {
         return(
             <Card>
                 <i id="i-angle" className="rotate-open"></i>
-                <h5 className="card-header" onClick={this.handleClick} style={{cursor: "pointer"}}>&nbsp;&nbsp;&nbsp;&nbsp;Add a new car record</h5>
+                <h5 className="card-header" onClick={this.handleClick} style={{cursor: "pointer"}}>&nbsp;&nbsp;&nbsp;&nbsp;Add a new products/services record</h5>
                 <Card.Body>
                     <CarFormAdd></CarFormAdd>
                 </Card.Body>
@@ -22,4 +22,4 @@ class ProductsCars extends React.Component {
     }
 }
 
-export default ProductsCars;
+export default CardFormWrapperProducts;

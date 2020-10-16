@@ -5,6 +5,7 @@ import Header from './components/header/header';
 import {Switch, Router, Route, Redirect} from 'react-router-dom';
 import PageCars from "./components/cars/page-cars";
 import PageCustomer from "./components/customers/page-customers";
+import PageProducts from "./components/products/page-products";
 
 function App() {
   return (
@@ -12,10 +13,10 @@ function App() {
         <div className="main">
             <Header/>
             <Switch>
-                <Route path='/cars' component={PageCars}/>
                 {/*<Redirect to='/sales'/>*/}
+                <Route path='/cars' component={PageCars}/>
                 <Route path='/customers' component={PageCustomer}/>
-                {/*<Route path='/cars' component={CarTable}/>*/}
+                <Route path='/products' component={PageProducts}/>
             </Switch>
         </div>
     </div>

@@ -3,6 +3,7 @@ import {Button, Form} from "react-bootstrap";
 import {MyDropdown} from "../common/my-dropdown";
 import "./cars.css";
 import jsonData from "../../car_brand_model.json";
+import ImageUploader from 'react-images-upload';
 
 class CardFormAdd extends React.Component {
     constructor(props) {
@@ -18,6 +19,7 @@ class CardFormAdd extends React.Component {
             ownerPreContent: [],
             brandPreContent: brandPreContent,
             modelPreContent: modelPreContent,
+            pictures: "",
             userInput: {
                 plateNumber: "",
                 year: myDate.getFullYear(),
@@ -82,8 +84,21 @@ class CardFormAdd extends React.Component {
         })
     }
 
+    handleClick = (e) => {
+        e.preventDefault();
+        console.log(this.state);
+    }
+
+    onDrop = (picture) => {
+        this.setState({
+            pictures: picture
+            // pictures: this.state.pictures.concat(picture)
+        });
+    }
+
     render() {
         console.log(this.state)
+        // console.log(jsonData)
         return(
             <Form>
                 <Form.Row>
@@ -100,10 +115,20 @@ class CardFormAdd extends React.Component {
                     <MyDropdown transferMsg = {(msg, label) => this.transferMsg(msg, label)} data={this.state.ownerPreContent} label="Owner" value={this.state.userInput.owner}></MyDropdown>
                     <MyDropdown transferMsg = {(msg, label) => this.transferMsg(msg, label)} data={this.state.brandPreContent} label="Brand" value={this.state.userInput.brand}></MyDropdown>
                     <MyDropdown transferMsg = {(msg, label) => this.transferMsg(msg, label)} data={this.state.modelPreContent} label="Model" value={this.state.userInput.model}></MyDropdown>
+                    <div className="col-6 col-md-3">
+                    </div>
+                    <ImageUploader
+                        withIcon={true}
+                        buttonText='Choose images'
+                        onChange={this.onDrop}
+                        imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                        maxFileSize={5242880}
+                        withPreview={true}
+                    />
                 </Form.Row>
                 <br/>
                 <Form.Row>
-                    <Button variant="primary" type="submit">
+                    <Button variant="primary" type="submit" onClick={this.handleClick}>
                         Submit
                     </Button>
                 </Form.Row>
