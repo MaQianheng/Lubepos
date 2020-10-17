@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, Form} from "react-bootstrap";
 import {MyDropdown} from "../common/my-dropdown";
-import "./cars.css";
+import "../common/my-dropdown.css";
 import jsonData from "../../car_brand_model.json";
 import ImageUploader from 'react-images-upload';
 

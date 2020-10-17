@@ -22,8 +22,7 @@ class SearchField extends React.Component {
         }
         for (let key in jsonData) {
             brandPreContent.push(key);
-            let arrayCopy = [...jsonData[key]];
-            arrayCopy.unshift("All");
+            let arrayCopy = ["All", ...jsonData[key]];
             carPreContent[key] = arrayCopy;
         }
         this.state = {
@@ -81,7 +80,20 @@ class SearchField extends React.Component {
                     <MyDropdown transferMsg = {(msg, label) => this.transferMsg(msg, label)} data={this.state.colorPreContent} label="Color" value={this.state.userInput.color}></MyDropdown>
                     <MyDropdown transferMsg = {(msg, label) => this.transferMsg(msg, label)} data={this.state.brandPreContent} label="Brand" value={this.state.userInput.brand}></MyDropdown>
                     <MyDropdown transferMsg = {(msg, label) => this.transferMsg(msg, label)} data={this.state.modelPreContent} label="Model" value={this.state.userInput.model}></MyDropdown>
-                    <MySearchBar className="col-6 col-md-5" placeHolder="Search by plate number or owner name"></MySearchBar>
+                    {/*<div className="col-6 col-md-3">*/}
+                        {/*<div class="input-group-prepend">*/}
+                        {/*    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>*/}
+                        {/*    <div class="dropdown-menu">*/}
+                        {/*        <a class="dropdown-item" href="#">Action</a>*/}
+                        {/*        <a class="dropdown-item" href="#">Another action</a>*/}
+                        {/*        <a class="dropdown-item" href="#">Something else here</a>*/}
+                        {/*        <div role="separator" class="dropdown-divider"></div>*/}
+                        {/*        <a class="dropdown-item" href="#">Separated link</a>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
+                        {/*<MySearchBar placeHolder="Search by plate number or owner name"></MySearchBar>*/}
+                    {/*</div>*/}
+                    <MySearchBar placeHolder="Search by plate number or owner name"></MySearchBar>
                 </div>
             </div>
         )

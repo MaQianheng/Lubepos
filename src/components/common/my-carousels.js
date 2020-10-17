@@ -12,7 +12,7 @@ class MyCarousels extends React.Component {
                               className="d-block w-100"
                               src={item.src}
                               alt={item.brand}
-                              style={{height: "300px", borderTopLeftRadius: "15px", borderTopRightRadius: "15px"}}
+                              style={{height: "300px"}}
                             />
                             <Carousel.Caption>
                               <h3>{item.brand}</h3>

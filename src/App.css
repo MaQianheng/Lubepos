@@ -42,8 +42,16 @@
   }
 }
 
+td {
+  vertical-align: middle !important;
+}
+
 .rotate-open {
   transform: rotate(90deg);
+}
+
+.table-responsive {
+  overflow-x: visible !important;
 }
 
 .card>i {
@@ -59,7 +67,7 @@
 
 #card-detail-cars {
   transition: all 0.4s;
-  border-radius: 15px;
+  /*border-radius: 15px;*/
 }
 
 #card-detail-cars:hover {

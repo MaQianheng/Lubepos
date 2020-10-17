@@ -5,11 +5,23 @@
     height: 300px;
 }
 
+#invisible-label-ul {
+    top: 38px;
+}
+
+.dropdown>button {
+    text-align: left;
+}
+
 .dropdown>button::after {
     position: absolute;
-    right: 25px;
+    right: 15px;
     top: 50px;
     color: #007bff;
+}
+
+#invisible-label-button-after::after {
+    top: 18px;
 }
 
 .dropdown>button:hover::after {

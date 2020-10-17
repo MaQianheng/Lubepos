@@ -25,12 +25,12 @@ class MyDropdown extends React.Component {
     }
 
     render() {
-        const {data, label, value} = this.props;
+        const {data, label, value, control, invisibleLabel} = this.props;
         return (
-            <div className="col-6 col-md-3 dropdown">
-                <Form.Label>{label}</Form.Label>
-                <button className="btn btn-primary dropdown-toggle form-control" style={{textAlign:"left"}} onClick={this.handleDropDownClick}>{value}</button>
-                <ul className="dropdown-menu" style={{height: data.length>=5 ? 180 : data.length * 40}}>
+            <div className={control ? "dropdown" : "col-6 col-md-3 dropdown"}>
+                {invisibleLabel ? null : <Form.Label>{label}</Form.Label>}
+                <button className="btn btn-primary dropdown-toggle form-control" id={invisibleLabel ? "invisible-label-button-after" : ""} onClick={this.handleDropDownClick}>{value}</button>
+                <ul className="dropdown-menu" id={invisibleLabel ? "invisible-label-ul" : null} style={{height: data.length>=5 ? 180 : data.length * 40}}>
                     {
                         data.map((item, idx) => (
                             <li className="dropdown-item" style={{cursor:"pointer"}} key={idx} onClick={this.handleDropDownItemClick}>{item}</li>

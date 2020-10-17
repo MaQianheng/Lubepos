@@ -6,6 +6,7 @@ import {Switch, Router, Route, Redirect} from 'react-router-dom';
 import PageCars from "./components/cars/page-cars";
 import PageCustomer from "./components/customers/page-customers";
 import PageProducts from "./components/products/page-products";
+import PageSales from "./components/sales/page-sales";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
             <Header/>
             <Switch>
                 {/*<Redirect to='/sales'/>*/}
+                <Route path='/sales' component={PageSales}/>
                 <Route path='/cars' component={PageCars}/>
                 <Route path='/customers' component={PageCustomer}/>
                 <Route path='/products' component={PageProducts}/>
