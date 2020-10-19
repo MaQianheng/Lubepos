@@ -6,7 +6,7 @@ class MyDropdown extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: this.props.data[0]
+            value: this.props.value
         }
     }
 

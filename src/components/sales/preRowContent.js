@@ -4,55 +4,45 @@ import {MyDropdown} from "../common/my-dropdown";
 export default class PreRowContent extends React.Component {
     constructor(props) {
         super(props);
-        let {productsName, servicesName, productsItems, servicesItems} = this.props
-        // let productsName = []
-        // let servicesName = []
-        // products.map((item) => (productsName.push(item[0])))
-        // services.map((item) => (servicesName.push(item[0])))
         this.state = {
             idx: this.props.rowIdx,
-            // productsName: productsName,
-            // servicesName: servicesName,
-            // productsItems: productsItems,
-            // servicesItems: servicesItems,
             userInput: this.props.userInput
         }
     }
 
     handleDropDownChange = (msg, label) => {
-        let index;
-        let items;
+        let index
+        let {userInput} = this.state
+        let preMsg = [...this.state.userInput]
         switch (label) {
             case "type":
                 index = 0
                 break
             case "items":
                 index = 1
+                let items
                 if (this.state.userInput[0] === "products") {
                     items = this.props.productsItems
                 } else {
                     items = this.props.servicesItems
                 }
+                userInput[2] = items[msg][0]
+                userInput[3] = 1
                 break
             default:
-                return
                 break
         }
-
-        let {userInput} = this.state
         userInput[index] = msg
-        if (index === 0 && msg !== this.state.userInput[0]) {
+        if (index === 0 && msg !== preMsg[0]) {
             if (msg === "products") {
                 userInput[1] = this.props.productsName[0]
+                // console.log(userInput)
             } else {
                 userInput[1] = this.props.servicesName[0]
+                // console.log(userInput)
             }
         }
-        if (items) {
-            userInput[2] = items[msg][0]
-            userInput[3] = 1
-            // console.log(items)
-        }
+
         userInput[4] = parseInt(userInput[2]) * parseInt(userInput[3])
         this.setState({
             userInput: userInput
@@ -76,12 +66,13 @@ export default class PreRowContent extends React.Component {
         //     userInput[4] = parseInt(userInput[2]) * parseInt(userInput[3])
         //     return {userInput: userInput};
         // })
-        this.props.transferMsg(this.state.userInput, this.state.idx)
+        this.props.transferMsg(preMsg, userInput, this.state.idx)
     }
 
     handleChange = (e) => {
         let {value} = e.target
         let index = 0
+        let pre = this.state.userInput
         const key = e.target.getAttribute('name');
         switch (key) {
             case "amount":
@@ -102,13 +93,12 @@ export default class PreRowContent extends React.Component {
         //     userInput[4] = parseInt(userInput[2]) * parseInt(userInput[3])
         //     return {userInput: userInput};
         // })
-        this.props.transferMsg(this.state.userInput, this.state.idx)
+        this.props.transferMsg(pre, userInput, this.state.idx)
     }
 
     render() {
-        let {type, productsName, servicesName, productsItems, servicesItems} = this.props
+        let {type, productsName, servicesName} = this.props
         let {userInput} = this.state
-        console.log(this.state)
         return(
             <tr>
                 <td>

@@ -9,8 +9,8 @@ export default class TableAdd extends React.Component {
             fields: ["Type", "Item", "Unit Price", "Amount", "Total"],
             type: ["products", "services"],
             //["name", "price", "in stock"]
-            productsName: ["product 1", "product 2", "product 3", "product 4", "product 5"],
-            servicesName: ["service 1", "service 2", "service 3", "service 4", "service 5", "service 6", "service 7"],
+            productsName: [],
+            servicesName: [],
             // {name: [price, stock]}
             products: {
                 "product 1": ["20", "30"],
@@ -27,12 +27,14 @@ export default class TableAdd extends React.Component {
                 "service 5": ["140", "-1"],
                 "service 6": ["50", "-1"],
                 "service 7": ["90", "-1"]
-
             },
             preInput: ["products", "product 1", "20", "1", "20"],
-            userInput: [
-                // ["products", "product 1", "20", "1", "20"]
-            ],
+            userInput: [],
+            selectedItems:{
+                "products": [],
+                "services": []
+            },
+            isDisableButton: false,
             isVAT: false,
             gross: 0,
             VAT: 0,
@@ -40,9 +42,79 @@ export default class TableAdd extends React.Component {
         }
     }
 
+    componentDidMount() {
+        let oriProductsName = ["product 1", "product 2", "product 3", "product 4", "product 5"]
+        let oriServicesName = ["service 1", "service 2", "service 3", "service 4", "service 5", "service 6", "service 7"]
+        this.setState({productsName: oriProductsName, servicesName: oriServicesName})
+    }
+
+    rollBackArray = (name, value) => {
+        let arr
+        switch (name) {
+            case "products":
+                arr = this.state.productsName
+                arr.push(value)
+                arr = arr.sort()
+                this.setState({productsName: arr})
+                break;
+            case "services":
+                arr = this.state.servicesName
+                arr.push(value)
+                arr = arr.sort()
+                this.setState({servicesName: arr})
+                break;
+            default:
+                break;
+        }
+    }
+
+    // todo: add the item into name array when user select other items
+    filterTheArray = (name, value) => {
+        let arr
+        let {productsName, servicesName, type} = this.state
+        switch (name) {
+            case "products":
+                arr = productsName.filter(name => name !== value)
+                if (arr.length === 0) {
+                    this.setState({type: type.filter(name => name !== "products")})
+                }
+                this.setState({productsName: arr})
+                break;
+            case "services":
+                arr = servicesName.filter(name => name !== value)
+                if (arr.length === 0) {
+                    this.setState({type: type.filter(name => name !== "services")})
+                }
+                this.setState({servicesName: arr})
+                break;
+            default:
+                break;
+        }
+        if ((productsName.length === 1 && servicesName.length === 0) || (productsName.length === 0 && servicesName.length === 1)) {
+            this.setState({
+                isDisableButton: true
+            })
+        }
+    }
+
     handleClick = () => {
-        let {userInput} = this.state
-        userInput.push(["products", "product 1", "20", "1", "20"])
+        let {userInput, productsName, servicesName, products, services} = this.state
+        let name
+        let value
+        let price
+        if (productsName.length !== 0) {
+            name = "products"
+            value = productsName[0]
+            price = products[value][0]
+        } else if (servicesName.length !== 0) {
+            name = "services"
+            value = servicesName[0]
+            price = services[value][0]
+        } else {
+            return
+        }
+        userInput.push([name, value, price, 1, price])
+        this.filterTheArray(name, value)
         let arr = this.calculateTotalPrice(userInput, this.state.isVAT)
         this.setState({
             userInput: userInput,
@@ -50,20 +122,6 @@ export default class TableAdd extends React.Component {
             VAT: arr[1],
             total: arr[2]
         })
-
-        // this.setState(prevState => {
-        //     let tmp = Object.assign({}, prevState);
-        //     tmp["userInput"].push(this.state.preInput)
-        //     let arr = this.calculateTotalPrice(tmp["userInput"], this.state.isVAT)
-        //     tmp["gross"] = arr[0]
-        //     tmp["VAT"] = arr[1]
-        //     tmp["total"] = arr[2]
-        //     return tmp;
-        // })
-        // let tmp = this.state.userInput.push(this.state.preInput)
-        // this.setState({userInput: tmp})
-        // console.log(this.state.userInput)
-        // console.log(this.state)
     }
 
     handleChange = (e) => {
@@ -79,9 +137,13 @@ export default class TableAdd extends React.Component {
         })
     }
 
-    transferMsg = (msg, idx) => {
+    transferMsg = (preMsg, newMsg, idx) => {
         let {userInput} = this.state
-        userInput[idx] = msg
+        userInput[idx] = newMsg
+        // roll back
+        this.rollBackArray(preMsg[0], preMsg[1])
+        // filter
+        this.filterTheArray(newMsg[0], newMsg[1])
         let arr = this.calculateTotalPrice(userInput, this.state.isVAT)
         this.setState({
             userInput: userInput,
@@ -89,15 +151,6 @@ export default class TableAdd extends React.Component {
             VAT: arr[1],
             total: arr[2]
         })
-        // this.setState(prevState => {
-        //     let tmp = Object.assign({}, prevState);
-        //     tmp.userInput[idx] = msg
-        //     let arr = this.calculateTotalPrice(tmp["userInput"], this.state.isVAT)
-        //     tmp["gross"] = arr[0]
-        //     tmp["VAT"] = arr[1]
-        //     tmp["total"] = arr[2]
-        //     return tmp;
-        // })
     }
 
     calculateTotalPrice = (arr, isVAT) => {
@@ -114,15 +167,8 @@ export default class TableAdd extends React.Component {
     }
 
     render() {
-        let {userInput, gross, VAT, total} = this.state
+        let {userInput, gross, VAT, total, isDisableButton} = this.state
         return (
-            // <Form>
-            //     <Form.Row>
-            //
-            //         <MyDropdown transferMsg = {(msg, label) => this.transferMsg(msg, label)} data={this.state.products} label="products" value={this.state.type}></MyDropdown>
-            //         <MyDropdown transferMsg = {(msg, label) => this.transferMsg(msg, label)} data={this.state.services} label="services" value={this.state.type}></MyDropdown>
-            //     </Form.Row>
-            // </Form>
             <div>
                 <Table hover responsive>
                     <thead>
@@ -130,7 +176,7 @@ export default class TableAdd extends React.Component {
                         {
                             this.state.fields.map(
                                 (item, idx) => (
-                                    <th key={idx}>{item}</th>
+                                    <th key={idx} style={{width: "20%"}}>{item}</th>
                                 )
                             )
                         }
@@ -141,7 +187,7 @@ export default class TableAdd extends React.Component {
                         userInput.map(
                             (item, idx) => (
                                 <PreRowContent key={idx} rowIdx={idx}
-                                               transferMsg={(msg, idx) => this.transferMsg(msg, idx)}
+                                               transferMsg={(preMsg, newMsg, idx) => this.transferMsg(preMsg, newMsg, idx)}
                                                type={this.state.type}
                                                productsName={this.state.productsName}
                                                servicesName={this.state.servicesName}
@@ -168,7 +214,7 @@ export default class TableAdd extends React.Component {
                     </tr>
                     </tbody>
                 </Table>
-                <button type="button" className="btn btn-primary" onClick={this.handleClick}>Add a new row</button>
+                <button type="button" className="btn btn-primary" disabled={isDisableButton} onClick={this.handleClick}>Add a new row</button>
             </div>
         )
     }
