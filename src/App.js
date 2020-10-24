@@ -5,7 +5,7 @@ import Header from './components/header/header';
 import {Switch, Router, Route, Redirect, DefaultRoute} from 'react-router-dom';
 import PageCars from "./components/cars/page-cars";
 import PageCustomer from "./components/customers/page-customers";
-import PageProducts from "./components/products/page-products";
+import PageItems from "./components/items/page-items";
 import PageSales from "./components/sales/page-sales";
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
                 <Route path='/sales' component={PageSales}/>
                 <Route path='/cars' component={PageCars}/>
                 <Route path='/customers' component={PageCustomer}/>
-                <Route path='/products' component={PageProducts}/>
+                <Route path='/items' component={PageItems}/>
                 <Redirect to='/sales'/>
             </Switch>
         </div>

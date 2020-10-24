@@ -26,7 +26,7 @@ class Sidebar extends React.Component {
                 },
                 {
                     text: "PRODUCTS/SERVICES",
-                    href: "/products"
+                    href: "/items"
                 }
             ]
         };

@@ -1,6 +1,7 @@
 import React from "react";
 import {Table} from "react-bootstrap";
 import PreRowContent from "./preRowContent";
+import MyAlert from "../common/my-alert";
 
 export default class TableAdd extends React.Component {
     constructor(props) {
@@ -38,7 +39,12 @@ export default class TableAdd extends React.Component {
             isVAT: false,
             gross: 0,
             VAT: 0,
-            total: 0
+            total: 0,
+            alert: {
+                type: "success",
+                value: "success",
+                date: Date.now()
+            }
         }
     }
 
@@ -68,7 +74,6 @@ export default class TableAdd extends React.Component {
         }
     }
 
-    // todo: add the item into name array when user select other items
     filterTheArray = (name, value) => {
         let arr
         let {productsName, servicesName, type} = this.state
@@ -167,7 +172,7 @@ export default class TableAdd extends React.Component {
     }
 
     render() {
-        let {userInput, gross, VAT, total, isDisableButton} = this.state
+        let {userInput, gross, VAT, total, isDisableButton, alert} = this.state
         return (
             <div>
                 <Table hover responsive>
@@ -215,6 +220,10 @@ export default class TableAdd extends React.Component {
                     </tbody>
                 </Table>
                 <button type="button" className="btn btn-primary" disabled={isDisableButton} onClick={this.handleClick}>Add a new row</button>
+                <br/>
+                <div className="row">
+                    <MyAlert type={alert.type} value={alert.value}></MyAlert>
+                </div>
             </div>
         )
     }

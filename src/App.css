@@ -50,10 +50,6 @@ td {
   transform: rotate(90deg);
 }
 
-.table-responsive {
-  overflow-x: visible !important;
-}
-
 .card>i {
   background-image: url("assets/angle-right-solid.svg");
   background-size: 28px 28px;

@@ -52,7 +52,7 @@ export default class PreRowContent extends React.Component {
         //     let userInput = Object.assign({}, prevState.userInput);
         //     userInput[index] = msg
         //     if (index === 0 && msg !== this.state.userInput[0]) {
-        //         if (msg === "products") {
+        //         if (msg === "items") {
         //             userInput[1] = this.props.productsName[0]
         //         } else {
         //             userInput[1] = this.props.servicesName[0]

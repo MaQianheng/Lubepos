@@ -7,8 +7,13 @@ import {withRouter, Link} from 'react-router-dom'
 class Header extends React.Component {
     constructor(props) {
         super(props);
+        let currentPathname = this.props.history.location.pathname
+        if (currentPathname === "/") {
+            currentPathname = "/sales"
+            this.props.history.push("/sales")
+        }
         this.state = {
-            currentPathname: "/sales",
+            currentPathname: currentPathname,
             navInfo: [
                 {
                     text: "SALES",
@@ -24,20 +29,10 @@ class Header extends React.Component {
                 },
                 {
                     text: "PRODUCTS/SERVICES",
-                    href: "/products"
+                    href: "/items"
                 }
             ]
         };
-    }
-
-    componentWillMount() {
-        let currentPathname = this.props.history.location.pathname
-        if (currentPathname === "/") {
-            currentPathname = "/sales"
-            this.props.history.push("/sales")
-        }
-        this.setState({currentPathname})
-        // console.log(currentPathname)
     }
 
     componentDidMount() {

@@ -26,15 +26,16 @@ class SearchField extends React.Component {
             carPreContent[key] = arrayCopy;
         }
         this.state = {
-            colorPreContent: ["WHITE", "BLACK", "PURPLE", "BLUE", "NAVY", "GREEN", "YELLOW", "ORANGE", "RED", "เทา"],
+            colorPreContent: ["All", "WHITE", "BLACK", "PURPLE", "BLUE", "NAVY", "GREEN", "YELLOW", "ORANGE", "RED", "เทา"],
             ownerPreContent: [],
             carPreContent: carPreContent,
             brandPreContent: brandPreContent,
             modelPreContent: carPreContent["All"],
             userInput: {
                 // year: myDate.getFullYear(),
+                searchField: "Plate Number",
                 searchText: "",
-                color: "WHITE",
+                color: "All",
                 brand: "All",
                 model: "All"
             }
@@ -44,13 +45,13 @@ class SearchField extends React.Component {
     transferMsg = (msg, label) => {
         let key = ""
         switch (label) {
-            case "Color":
+            case "color":
                 key = "color";
                 break;
-            case "Owner":
+            case "owner":
                 key = "owner";
                 break;
-            case "Brand":
+            case "brand":
                 key = "brand";
                 this.setState({...this.state, modelPreContent: this.state.carPreContent[msg]});
                 this.setState(prevState => {
@@ -59,14 +60,23 @@ class SearchField extends React.Component {
                     return {userInput};
                 })
                 break;
-            case "Model":
+            case "model":
                 key = "model";
+                break;
+            case "search-field":
+                key = "searchField"
+                break;
+            case "search-text":
+                key = "searchText"
                 break;
             default:
                 break;
         }
         this.setState(prevState => {
             let userInput = Object.assign({}, prevState.userInput);
+            if (label === "search-text") {
+                this.props.fromSearchFieldToParent(userInput)
+            }
             userInput[key] = msg
             return {userInput};
         })
@@ -74,26 +84,21 @@ class SearchField extends React.Component {
 
     render() {
         console.log(this.state)
-        return(
+        return (
             <div className="card">
                 <div className="card-body row">
-                    <MyDropdown transferMsg = {(msg, label) => this.transferMsg(msg, label)} data={this.state.colorPreContent} label="Color" value={this.state.userInput.color}></MyDropdown>
-                    <MyDropdown transferMsg = {(msg, label) => this.transferMsg(msg, label)} data={this.state.brandPreContent} label="Brand" value={this.state.userInput.brand}></MyDropdown>
-                    <MyDropdown transferMsg = {(msg, label) => this.transferMsg(msg, label)} data={this.state.modelPreContent} label="Model" value={this.state.userInput.model}></MyDropdown>
-                    {/*<div className="col-6 col-md-3">*/}
-                        {/*<div class="input-group-prepend">*/}
-                        {/*    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>*/}
-                        {/*    <div class="dropdown-menu">*/}
-                        {/*        <a class="dropdown-item" href="#">Action</a>*/}
-                        {/*        <a class="dropdown-item" href="#">Another action</a>*/}
-                        {/*        <a class="dropdown-item" href="#">Something else here</a>*/}
-                        {/*        <div role="separator" class="dropdown-divider"></div>*/}
-                        {/*        <a class="dropdown-item" href="#">Separated link</a>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
-                        {/*<MySearchBar placeHolder="Search by plate number or owner name"></MySearchBar>*/}
-                    {/*</div>*/}
-                    <MySearchBar placeHolder="Search by plate number or owner name"></MySearchBar>
+                    <MyDropdown transferMsg={(msg, label) => this.transferMsg(msg, label)}
+                                data={this.state.colorPreContent} label="color"
+                                value={this.state.userInput.color}></MyDropdown>
+                    <MyDropdown transferMsg={(msg, label) => this.transferMsg(msg, label)}
+                                data={this.state.brandPreContent} label="brand"
+                                value={this.state.userInput.brand}></MyDropdown>
+                    <MyDropdown transferMsg={(msg, label) => this.transferMsg(msg, label)}
+                                data={this.state.modelPreContent} label="model"
+                                value={this.state.userInput.model}></MyDropdown>
+                    <MySearchBar transferMsg={(msg, label) => this.transferMsg(msg, label)} label="search-field"
+                                 fields={this.state.userInput.searchField}
+                                 data={["Plate Number", "Owner"]}></MySearchBar>
                 </div>
             </div>
         )
