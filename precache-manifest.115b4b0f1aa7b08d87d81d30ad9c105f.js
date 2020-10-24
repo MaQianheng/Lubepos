@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "95c3538e8776f771c25bd6682d1d5455",
+    "revision": "65b9a5241abeb4ae8f74d6eb540534c2",
     "url": "/Lubepos/index.html"
   },
   {
