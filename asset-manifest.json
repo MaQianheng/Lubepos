@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/Lubepos/static/css/main.b1396225.chunk.css",
-    "main.js": "/Lubepos/static/js/main.fdfa0c49.chunk.js",
-    "main.js.map": "/Lubepos/static/js/main.fdfa0c49.chunk.js.map",
+    "main.css": "/Lubepos/static/css/main.9eb1a585.chunk.css",
+    "main.js": "/Lubepos/static/js/main.a3730873.chunk.js",
+    "main.js.map": "/Lubepos/static/js/main.a3730873.chunk.js.map",
     "runtime-main.js": "/Lubepos/static/js/runtime-main.aedf355d.js",
     "runtime-main.js.map": "/Lubepos/static/js/runtime-main.aedf355d.js.map",
-    "static/css/2.ddcb2843.chunk.css": "/Lubepos/static/css/2.ddcb2843.chunk.css",
-    "static/js/2.3349e617.chunk.js": "/Lubepos/static/js/2.3349e617.chunk.js",
-    "static/js/2.3349e617.chunk.js.map": "/Lubepos/static/js/2.3349e617.chunk.js.map",
+    "static/css/2.60fbb835.chunk.css": "/Lubepos/static/css/2.60fbb835.chunk.css",
+    "static/js/2.b4c929a5.chunk.js": "/Lubepos/static/js/2.b4c929a5.chunk.js",
+    "static/js/2.b4c929a5.chunk.js.map": "/Lubepos/static/js/2.b4c929a5.chunk.js.map",
     "index.html": "/Lubepos/index.html",
-    "precache-manifest.691acec2ef55949f8e4728a28d7af090.js": "/Lubepos/precache-manifest.691acec2ef55949f8e4728a28d7af090.js",
+    "precache-manifest.68d80f251d159253ea370a4ddca7b902.js": "/Lubepos/precache-manifest.68d80f251d159253ea370a4ddca7b902.js",
     "service-worker.js": "/Lubepos/service-worker.js",
-    "static/css/2.ddcb2843.chunk.css.map": "/Lubepos/static/css/2.ddcb2843.chunk.css.map",
-    "static/css/main.b1396225.chunk.css.map": "/Lubepos/static/css/main.b1396225.chunk.css.map",
-    "static/js/2.3349e617.chunk.js.LICENSE.txt": "/Lubepos/static/js/2.3349e617.chunk.js.LICENSE.txt",
+    "static/css/2.60fbb835.chunk.css.map": "/Lubepos/static/css/2.60fbb835.chunk.css.map",
+    "static/css/main.9eb1a585.chunk.css.map": "/Lubepos/static/css/main.9eb1a585.chunk.css.map",
+    "static/js/2.b4c929a5.chunk.js.LICENSE.txt": "/Lubepos/static/js/2.b4c929a5.chunk.js.LICENSE.txt",
     "static/media/UploadIcon.svg": "/Lubepos/static/media/UploadIcon.1cedb6e9.svg",
     "static/media/App.css": "/Lubepos/static/media/angle-right-solid.fbb21171.svg",
     "static/media/logo.svg": "/Lubepos/static/media/logo.5d5d9eef.svg",
@@ -21,9 +21,9 @@
   },
   "entrypoints": [
     "static/js/runtime-main.aedf355d.js",
-    "static/css/2.ddcb2843.chunk.css",
-    "static/js/2.3349e617.chunk.js",
-    "static/css/main.b1396225.chunk.css",
-    "static/js/main.fdfa0c49.chunk.js"
+    "static/css/2.60fbb835.chunk.css",
+    "static/js/2.b4c929a5.chunk.js",
+    "static/css/main.9eb1a585.chunk.css",
+    "static/js/main.a3730873.chunk.js"
   ]
 }
