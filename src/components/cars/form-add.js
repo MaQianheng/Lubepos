@@ -33,6 +33,7 @@ class CardFormAdd extends React.Component {
                 model: modelPreContent[0],
                 carImages: ""
             },
+            isLoading: false,
             alert: {
                 type: "success",
                 value: "success",
@@ -165,14 +166,10 @@ class CardFormAdd extends React.Component {
             } else {
             }
         }).catch((err) => {
+            console.log(err)
             // this.informAlert("Insert success", "success")
             // this.setState({...this.state, userInput: userInput})
         })
-        // 0: {name: "Qianheng Ma", phone: "0999999999", email: "lll@gmail.com"}
-        // 1: {name: "customer2", phone: "0999999999", email: "customer2@gamil.com"}
-        // 2: {name: "customer3", phone: "0992222222", email: "customer3@gmail.com"}
-        // 3: {name: "customer4", phone: "0999999999", email: "customer3@gmail.com"}
-
     }
 
     componentDidMount() {

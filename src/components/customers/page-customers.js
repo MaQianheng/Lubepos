@@ -38,14 +38,20 @@ class PageCustomer extends React.Component {
 
     requestData = async (pageCount) => {
         this.setState({isLoading: true})
-        const response = await requestCustomersQuery({currentPageCount: pageCount})
-        if (response.data.err_code === 0) {
+        requestCustomersQuery({currentPageCount: pageCount}).then((r) => {
+            if (r.data.err_code === 0) {
+                this.setState({
+                    customers: r.data.customers,
+                    customersCount: r.data.customersCount,
+                    isLoading: false
+                })
+            }
+        }).catch((err) => {
+            console.log(err)
             this.setState({
-                customers: response.data.customers,
-                customersCount: response.data.customersCount,
                 isLoading: false
             })
-        }
+        })
     }
 
     async componentDidMount() {
@@ -56,7 +62,8 @@ class PageCustomer extends React.Component {
         return (
             <div style={{padding: "30px"}}>
                 <MySpinner isLoading={this.state.isLoading}></MySpinner>
-                <CardFormWrapperCustomers fromWrapperToParent={(data) => this.fromWrapperToParent(data)}></CardFormWrapperCustomers>
+                <CardFormWrapperCustomers
+                    fromWrapperToParent={(data) => this.fromWrapperToParent(data)}></CardFormWrapperCustomers>
                 <br/>
                 <MyTable
                     fields={this.state.fields}
@@ -64,7 +71,9 @@ class PageCustomer extends React.Component {
                     contents={this.state.customers}>
                 </MyTable>
                 <div className="row">
-                    <MyPagination transferMsg={(msg, label) => this.transferMsgFromPagination(msg, label)} dataPerPage={10} currentPageCount={this.state.currentPageCount} dataCount={this.state.customersCount}></MyPagination>
+                    <MyPagination transferMsg={(msg, label) => this.transferMsgFromPagination(msg, label)}
+                                  dataPerPage={10} currentPageCount={this.state.currentPageCount}
+                                  dataCount={this.state.customersCount}></MyPagination>
                 </div>
             </div>
         );

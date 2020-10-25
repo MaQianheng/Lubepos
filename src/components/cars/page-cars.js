@@ -51,6 +51,9 @@ class PageCars extends React.Component {
             }
             console.log(this.state)
         }).catch((err) => {
+            this.setState({
+                isLoading: false
+            })
             console.log(err)
         })
     }
@@ -64,10 +67,12 @@ class PageCars extends React.Component {
         return (
             <div style={{padding: "30px"}}>
                 <MySpinner isLoading={this.state.isLoading}></MySpinner>
-                <CardFormWrapperCars fromWrapperToParent={(data) => this.fromWrapperToParent(data)}></CardFormWrapperCars>
+                <CardFormWrapperCars
+                    fromWrapperToParent={(data) => this.fromWrapperToParent(data)}></CardFormWrapperCars>
                 <br/>
                 <div className="sticky-top" style={{marginBottom: "20px"}}>
-                    <SearchField fromSearchFieldToParent={(userInput) => this.fromSearchFieldToParent(userInput)}></SearchField>
+                    <SearchField
+                        fromSearchFieldToParent={(userInput) => this.fromSearchFieldToParent(userInput)}></SearchField>
                 </div>
                 <div className="row row-cols-1 row-cols-md-6">
                     {

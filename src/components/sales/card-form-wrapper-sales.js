@@ -15,11 +15,6 @@ export default class CardFormWrapperSales extends React.Component {
                 <i id="i-angle" className="rotate-open"></i>
                 <h5 className="card-header" onClick={this.handleClick} style={{cursor: "pointer"}}>&nbsp;&nbsp;&nbsp;&nbsp;Add a new sales record</h5>
                 <Card.Body>
-                    <div className="text-right">
-                        <button type="button" className="btn btn-light" style={{marginRight: "20px"}}>SAVE&PRINT</button>
-                        <button type="button" className="btn btn-dark">SAVE</button>
-                    </div>
-                    <br/>
                     <TableAdd></TableAdd>
                 </Card.Body>
             </Card>

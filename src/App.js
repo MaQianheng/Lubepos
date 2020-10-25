@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Header from './components/header/header';
-import {Switch, Router, Route, Redirect, DefaultRoute} from 'react-router-dom';
+import {Switch, Router, HashRouter, Route, Redirect, DefaultRoute} from 'react-router-dom';
 import PageCars from "./components/cars/page-cars";
 import PageCustomer from "./components/customers/page-customers";
 import PageItems from "./components/items/page-items";
@@ -15,11 +15,11 @@ function App() {
             <Header/>
             <Switch>
                 {/*<DefaultRoute handler={PageSales}/>*/}
-                <Route path='/sales' component={PageSales}/>
-                <Route path='/cars' component={PageCars}/>
-                <Route path='/customers' component={PageCustomer}/>
-                <Route path='/items' component={PageItems}/>
-                <Redirect to='/sales'/>
+                <Route path='/Lubepos/sales' component={PageSales}/>
+                <Route path='/Lubepos/cars' component={PageCars}/>
+                <Route path='/Lubepos/customers' component={PageCustomer}/>
+                <Route path='/Lubepos/items' component={PageItems}/>
+                <Redirect to='/Lubepos/sales'/>
             </Switch>
         </div>
     </div>

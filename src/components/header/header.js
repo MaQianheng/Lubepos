@@ -8,28 +8,28 @@ class Header extends React.Component {
     constructor(props) {
         super(props);
         let currentPathname = this.props.history.location.pathname
-        if (currentPathname === "/") {
-            currentPathname = "/sales"
-            this.props.history.push("/sales")
-        }
+        // if (currentPathname === "/") {
+        //     currentPathname = "/sales"
+        //     this.props.history.push("/sales")
+        // }
         this.state = {
             currentPathname: currentPathname,
             navInfo: [
                 {
                     text: "SALES",
-                    href: "/sales"
+                    href: "/Lubepos/sales"
                 },
                 {
                     text: "CARS",
-                    href: "/cars"
+                    href: "/Lubepos/cars"
                 },
                 {
                     text: "CUSTOMERS",
-                    href: "/customers"
+                    href: "/Lubepos/customers"
                 },
                 {
                     text: "PRODUCTS/SERVICES",
-                    href: "/items"
+                    href: "/Lubepos/items"
                 }
             ]
         };

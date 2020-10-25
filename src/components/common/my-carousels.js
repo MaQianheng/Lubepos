@@ -22,7 +22,7 @@ class MyCarousels extends React.Component {
                                 style={{minBlockSize: "-webkit-fill-available"}}
                                 alt={data.brand}
                                 effect="blur"
-                                src={`http://127.0.0.1:4000/images/${item}`} // use normal <img> attributes as props
+                                src={`https://e307b1922e60.ngrok.io/images/${item}`} // use normal <img> attributes as props
                                 width="100%"/>
                             <Carousel.Caption>
                                 <h3>{data.brand}</h3>

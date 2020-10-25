@@ -87,7 +87,7 @@ class FormAdd extends React.Component {
                 this.setState({...this.state, userInput: userInput, isLoading: false, alert: alert})
             } else {
                 alert.type = "danger"
-                alert.value = "Insert fail"
+                alert.value = `Insert fail ${r.data.message}`
                 alert.timeStamp = Date.now()
                 this.setState({...this.state, isLoading: false, alert: alert})
             }

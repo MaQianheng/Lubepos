@@ -36,14 +36,20 @@ class PageItems extends React.Component {
 
     requestData = async (pageCount) => {
         this.setState({isLoading: true})
-        const response = await requestItemsQuery({currentPageCount: pageCount})
-        if (response.data.err_code === 0) {
+        requestItemsQuery({currentPageCount: pageCount}).then((r) => {
+            if (r.data.err_code === 0) {
+                this.setState({
+                    items: r.data.items,
+                    itemsCount: r.data.itemsCount,
+                    isLoading: false
+                })
+            }
+        }).catch((err) => {
             this.setState({
-                items: response.data.items,
-                itemsCount: response.data.itemsCount,
-                isLoading: false
-            })
-        }
+                    isLoading: false
+                })
+            console.log(err)
+        })
     }
 
     async componentDidMount() {
@@ -54,15 +60,18 @@ class PageItems extends React.Component {
         return (
             <div style={{padding: "30px"}}>
                 <MySpinner isLoading={this.state.isLoading}></MySpinner>
-                <CardFormWrapperItems fromWrapperToParent={(item) => this.fromWrapperToParent(item)}></CardFormWrapperItems>
+                <CardFormWrapperItems
+                    fromWrapperToParent={(item) => this.fromWrapperToParent(item)}></CardFormWrapperItems>
                 <br/>
                 <MyTable
                     fields={this.state.fields}
                     contents={this.state.items}
                     keys={this.state.keys}
-                    ></MyTable>
+                ></MyTable>
                 <div className="row">
-                    <MyPagination fromPaginationToParent={(msg) => this.transferMsgFromPagination(msg)} dataPerPage={10} currentPageCount={this.state.currentPageCount} dataCount={this.state.itemsCount}></MyPagination>
+                    <MyPagination fromPaginationToParent={(msg) => this.transferMsgFromPagination(msg)} dataPerPage={10}
+                                  currentPageCount={this.state.currentPageCount}
+                                  dataCount={this.state.itemsCount}></MyPagination>
                 </div>
             </div>
         )
