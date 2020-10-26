@@ -10,7 +10,7 @@ class MyAlert extends React.Component {
     }
 
     toggleAlert = () => {
-        $(".alert").slideToggle()
+        $(`#${this.props.alertId}`).slideToggle()
     }
 
     componentDidUpdate(preProps,preStates, s) {
@@ -19,7 +19,7 @@ class MyAlert extends React.Component {
         }
         this.setState({timeStamp: this.props.timeStamp})
         // 如果正在展示
-        if ($(".alert").css("display") === "none") {
+        if ($(`#${this.props.alertId}`).css("display") === "none") {
             this.toggleAlert()
         }
         // setTimeout(() => {
@@ -28,11 +28,11 @@ class MyAlert extends React.Component {
     }
 
     render() {
-        const {type, value, className} = this.props
+        const {type, value, alertId} = this.props
         // ["primary", "secondary", "success", "danger", "warning", "info", "light", "dark"]
 
         return (
-            <div className={`alert alert-${type}`} role="alert" style={{display: "none", width: "100%"}}>
+            <div className={`alert alert-${type}`} id={alertId} role="alert" style={{display: "none", width: "100%"}}>
                 {value}
                 <button type="button" className="close" aria-label="Close" onClick={this.toggleAlert}>
                     <span aria-hidden="true">&times;</span>

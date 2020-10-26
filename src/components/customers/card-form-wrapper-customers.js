@@ -18,7 +18,7 @@ class CardFormWrapperCustomers extends React.Component {
         return(
             <Card>
                 <i id="i-angle" className="rotate-open"></i>
-                <h5 className="card-header" onClick={this.handleClick} style={{cursor: "pointer"}}>&nbsp;&nbsp;&nbsp;&nbsp;Add a new customer record</h5>
+                <h5 className="card-header" onClick={this.handleClick} style={{cursor: "pointer"}}>&nbsp;&nbsp;&nbsp;&nbsp;{this.props.cardTitle}</h5>
                 <Card.Body>
                     <FormAdd fromFormToParent={(data) => {this.fromFormToParent(data)}}></FormAdd>
                 </Card.Body>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Pagination} from "react-bootstrap";
+// import {Pagination} from "react-bootstrap";
 
 // 每个组件有个prop，prop可以通过'prop.'的方式拿到自定义组件标签里的任一属性
 

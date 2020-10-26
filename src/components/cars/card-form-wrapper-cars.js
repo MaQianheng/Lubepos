@@ -2,7 +2,6 @@ import React from "react";
 import CarFormAdd from "./form-add";
 import {Card} from "react-bootstrap";
 import $ from "jquery";
-import MyAlert from "../common/my-alert";
 
 class CardFormWrapperCars extends React.Component {
     handleClick = (e) => {

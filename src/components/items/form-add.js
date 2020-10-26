@@ -24,6 +24,14 @@ class FormAdd extends React.Component {
         };
     }
 
+    informAlert = (value, type) => {
+        let {alert} = this.state
+        alert.type = type ? type : "warning"
+        alert.value = value ? value : "Error"
+        alert.timeStamp = Date.now()
+        this.setState({alert: alert})
+    }
+
     handleChange = (e) => {
         let {value} = e.target
         const key = e.target.getAttribute('name');
@@ -36,33 +44,44 @@ class FormAdd extends React.Component {
         e.preventDefault();
         // const {name, type, brand, amount, price} = this.state.userInput
         const {userInput, alert} = this.state
-        let validation = false
-        switch (userInput.type) {
-            case "products":
-                if (userInput.name===""||userInput.type===""||userInput.brand===""||userInput.amount===""||userInput.price==="") {
-                    validation = false
-                } else {
-                    validation = true
-                }
-                break
-            case "services":
-                if (userInput.name===""||userInput.type===""||userInput.price==="") {
-                    validation = false
-                } else {
-                    validation = true
-                }
-                break
-            default:
-                break
+        // let validation = false
+        // switch (userInput.type) {
+        //     case "products":
+        //         if (userInput.name === "" || userInput.type === "" || userInput.brand === "" || userInput.amount === "" || userInput.price === "") {
+        //             validation = false
+        //         } else {
+        //             validation = true
+        //         }
+        //         break
+        //     case "services":
+        //         if (userInput.name === "" || userInput.type === "" || userInput.price === "") {
+        //             validation = false
+        //         } else {
+        //             validation = true
+        //         }
+        //         break
+        //     default:
+        //         break
+        // }
+        //
+        // if (!validation) {
+        //     let {alert} = this.state
+        //     alert.type = "warning"
+        //     alert.value = "One or more required fields are empty"
+        //     alert.timeStamp = Date.now()
+        //     this.setState({...this.state, alert: alert})
+        //     return
+        // }
+        for (let key in userInput) {
+            if (key==="brand" && userInput.type === "services") {
+                continue
+            }
+            if (!userInput[key] && userInput.type === "products") {
+                this.informAlert("One or more required fields are empty")
+                return
+            }
         }
-
-        if (!validation) {
-            let {alert} = this.state
-            alert.type = "warning"
-            alert.value = "One or more required fields are empty"
-            alert.timeStamp = Date.now()
-            this.setState({...this.state, alert: alert})
-            return
+        if (userInput.type === "products") {
         }
         this.setState({isLoading: true})
         requestItemInsert(this.state.userInput).then(r => {
@@ -148,7 +167,8 @@ class FormAdd extends React.Component {
                         <Button variant="primary" type="submit" style={{top: "30px", position: "relative"}}
                                 disabled={isLoading ? true : false}
                                 onClick={this.handleClick}>
-                            <span className={`spinner-border spinner-border-sm fade ${isLoading ? "show" : "d-none"}`} role="status" aria-hidden="true" style={{right: "5px", position: "relative"}}></span>
+                            <span className={`spinner-border spinner-border-sm fade ${isLoading ? "show" : "d-none"}`}
+                                  role="status" aria-hidden="true" style={{right: "5px", position: "relative"}}></span>
                             {
                                 isLoading ? "Loading..." : "Submit"
                             }
@@ -161,7 +181,7 @@ class FormAdd extends React.Component {
                 </Form.Row>
                 <br/>
                 <Form.Row>
-                    <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp}></MyAlert>
+                    <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp} alertId="alert-items-form"></MyAlert>
                 </Form.Row>
             </Form>
         )

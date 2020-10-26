@@ -7,9 +7,13 @@ export const requestLogin = (user) => httpRequest(baseUrl + '/users/login', user
 
 export const requestItemsQuery = (queryCondition) => httpRequest(baseUrl + '/items/query', queryCondition, 'GET')
 export const requestItemInsert = (item) => httpRequest(baseUrl + '/items/insert', item, 'GET')
+export const requestItemUpdate = (item) => httpRequest(baseUrl + '/items/update', item, 'GET')
+export const requestItemDelete = (item) => httpRequest(baseUrl + '/items/delete', item, 'GET')
 
 export const requestCustomersQuery = (queryCondition) => httpRequest(baseUrl + '/customers/query', queryCondition, 'GET')
 export const requestCustomerInsert = (customer) => httpRequest(baseUrl + '/customers/insert', customer, 'GET')
+export const requestCustomerUpdate = (customer) => httpRequest(baseUrl + '/customers/update', customer, 'GET')
+export const requestCustomerDelete = (customer) => httpRequest(baseUrl + '/customers/delete', customer, 'GET')
 
 export const requestCarsQuery = (queryCondition) => httpRequest(baseUrl + '/cars/query', queryCondition,'GET')
 export const requestCarInsert = (car) => httpRequest(baseUrl + '/cars/insert', car,'POST')

@@ -123,7 +123,7 @@ class FormAdd extends React.Component {
                 </Form.Row>
                 <br/>
                 <Form.Row>
-                    <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp}></MyAlert>
+                    <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp} alertId="alert-customers-form"></MyAlert>
                 </Form.Row>
 
             </Form>

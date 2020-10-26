@@ -175,6 +175,7 @@ export default class TableAdd extends React.Component {
 
     handleSubmit = () => {
         let itemsId = "",
+            itemsName = "",
             amount = "",
             remainingAmount = ""
         let {userInput, products, services, totalPrice} = this.state
@@ -189,25 +190,26 @@ export default class TableAdd extends React.Component {
             }
             switch (userInput[i][0]) {
                 case "products":
-                    console.log(products[userInput[i][1]].id)
                     itemsId += `${products[userInput[i][1]].id},`
+                    itemsName += `${userInput[i][1]},`
                     break
                 case "services":
                     itemsId += `${services[userInput[i][1]].id},`
+                    itemsName += `${userInput[i][1]},`
                     break
                 default:
                     this.informAlert("Please check your data")
                     return
-                    break
             }
             amount += `${[userInput[i][3]]},`
             remainingAmount += `${[userInput[i][4]]},`
         }
         itemsId = itemsId.substring(0, itemsId.length - 1)
+        itemsName = itemsName.substring(0, itemsName.length - 1)
         remainingAmount = remainingAmount.substring(0, remainingAmount.length - 1)
         amount = amount.substring(0, amount.length - 1)
         let sales = {
-            itemsId, amount, remainingAmount, totalPrice
+            itemsId, itemsName, amount, remainingAmount, totalPrice
         }
         console.log(sales)
         this.setState({isLoading: true})
@@ -256,7 +258,7 @@ export default class TableAdd extends React.Component {
     transferMsg = (preMsg, newMsg, idx) => {
         let {userInput, products, services} = this.state
         let type = newMsg[0]
-        let name = newMsg[1]
+        // let name = newMsg[1]
         let item
         switch (type) {
             case "products":
@@ -392,7 +394,7 @@ export default class TableAdd extends React.Component {
                 </div>
                 <br/>
                 <div>
-                    <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp}></MyAlert>
+                    <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp} alertId="alert-table-add"></MyAlert>
                 </div>
             </div>
         )

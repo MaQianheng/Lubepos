@@ -71,7 +71,7 @@ export default class PreRowContent extends React.Component {
             case "amount":
                 userInput[3] = value
                 if (userInput[0]==="products") {
-                    userInput[4] = this.state.oriAmount - parseInt(value)
+                    userInput[4] = this.props.userInput[4] - parseInt(value)
                 }
                 break
             default:

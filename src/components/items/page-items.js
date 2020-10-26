@@ -9,7 +9,7 @@ class PageItems extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fields: ["Name", "Type", "Brand", "Amount", "Price"],
+            fields: ["Name", "Type", "Brand", "Amount", "Price", "Action"],
             keys: ["name", "type", "brand", "amount", "price"],
             items: [],
             currentPageCount: 1,
@@ -46,8 +46,8 @@ class PageItems extends React.Component {
             }
         }).catch((err) => {
             this.setState({
-                    isLoading: false
-                })
+                isLoading: false
+            })
             console.log(err)
         })
     }
@@ -61,17 +61,24 @@ class PageItems extends React.Component {
             <div style={{padding: "30px"}}>
                 <MySpinner isLoading={this.state.isLoading}></MySpinner>
                 <CardFormWrapperItems
-                    fromWrapperToParent={(item) => this.fromWrapperToParent(item)}></CardFormWrapperItems>
+                    fromWrapperToParent={(item) => this.fromWrapperToParent(item)}>
+                </CardFormWrapperItems>
                 <br/>
-                <MyTable
-                    fields={this.state.fields}
-                    contents={this.state.items}
-                    keys={this.state.keys}
-                ></MyTable>
-                <div className="row">
-                    <MyPagination fromPaginationToParent={(msg) => this.transferMsgFromPagination(msg)} dataPerPage={10}
-                                  currentPageCount={this.state.currentPageCount}
-                                  dataCount={this.state.itemsCount}></MyPagination>
+                <div className="card">
+                    <div className="card-body">
+                        <MyTable
+                            tableRole="items"
+                            fields={this.state.fields}
+                            contents={this.state.items}
+                            keys={this.state.keys}
+                        ></MyTable>
+                        <div className="row">
+                            <MyPagination fromPaginationToParent={(msg) => this.transferMsgFromPagination(msg)}
+                                          dataPerPage={10}
+                                          currentPageCount={this.state.currentPageCount}
+                                          dataCount={this.state.itemsCount}></MyPagination>
+                        </div>
+                    </div>
                 </div>
             </div>
         )

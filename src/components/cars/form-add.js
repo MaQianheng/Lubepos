@@ -149,7 +149,7 @@ class CardFormAdd extends React.Component {
 
     requestData = (pageCount) => {
         this.setState({isLoading: true})
-        requestCustomersQuery({}).then((r) => {
+        requestCustomersQuery({pageCount}).then((r) => {
             if (r.data.err_code === 0) {
                 let {ownersId, ownersName} = this.state
                 for (let i = 0; i < r.data.customers.length; i++) {
@@ -173,7 +173,7 @@ class CardFormAdd extends React.Component {
     }
 
     componentDidMount() {
-        this.requestData()
+        this.requestData(0)
     }
 
     render() {
@@ -230,7 +230,7 @@ class CardFormAdd extends React.Component {
                 </Form.Row>
                 <br/>
                 <Form.Row>
-                    <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp}></MyAlert>
+                    <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp} alertId="alert-cars-form"></MyAlert>
                 </Form.Row>
 
             </Form>

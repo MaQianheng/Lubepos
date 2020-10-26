@@ -1,8 +1,7 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Header from './components/header/header';
-import {Switch, Router, HashRouter, Route, Redirect, DefaultRoute} from 'react-router-dom';
+import {Switch, Route, Redirect} from 'react-router-dom';
 import PageCars from "./components/cars/page-cars";
 import PageCustomer from "./components/customers/page-customers";
 import PageItems from "./components/items/page-items";
