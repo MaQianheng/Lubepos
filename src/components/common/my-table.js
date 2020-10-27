@@ -87,7 +87,6 @@ export class MyTable extends React.Component {
             deleteFunc = requestItemDelete
         }
         idxIsLoading.push(rowId)
-        console.log(contents[rowId])
         this.setState({idxIsLoading: idxIsLoading})
         switch (e.target.getAttribute("name")) {
             case "update":
@@ -138,6 +137,16 @@ export class MyTable extends React.Component {
             contents = this.props.contents
         }
         let operatingContent = contents[label]
+        operatingContent.type = msg
+        if (msg === "services") {
+            operatingContent.amount = -1
+            operatingContent.brand = ""
+        }
+        if (msg === "products") {
+            operatingContent.amount = 0
+            operatingContent.brand = ""
+        }
+        this.setState({contents: contents})
         console.log(operatingContent)
         console.log(msg, label)
     }

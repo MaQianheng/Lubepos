@@ -74,6 +74,12 @@ export default class TableAdd extends React.Component {
         })
     }
 
+    componentWillUnmount = () => {
+        this.setState = (state, callback) => {
+            return;
+        };
+    }
+
     rollBackArray = (name, value) => {
         let itemsArr
         if (this.state.productsName.length === 0 && this.state.servicesName.length === 0) {

@@ -7,43 +7,40 @@ import {withRouter, Link} from 'react-router-dom'
 class Header extends React.Component {
     constructor(props) {
         super(props);
-        let currentPathname = this.props.history.location.pathname
+        // let currentPathname = this.props.history.location.pathname
         // if (currentPathname === "/") {
         //     currentPathname = "/sales"
         //     this.props.history.push("/sales")
         // }
         this.state = {
-            currentPathname: currentPathname,
             navInfo: [
                 {
                     text: "SALES",
-                    href: "/Lubepos/sales"
+                    href: "/sales"
+                },
+                {
+                    text: "SALES REPORT",
+                    href: "/sales_report"
                 },
                 {
                     text: "CARS",
-                    href: "/Lubepos/cars"
+                    href: "/cars"
                 },
                 {
                     text: "CUSTOMERS",
-                    href: "/Lubepos/customers"
+                    href: "/customers"
                 },
                 {
                     text: "PRODUCTS/SERVICES",
-                    href: "/Lubepos/items"
+                    href: "/items"
                 }
             ]
         };
     }
 
-    componentDidMount() {
-        this.props.history.listen((location) => {
-            let currentPathname = location.pathname
-            this.setState({currentPathname})
-        })
-    }
-
 
     render() {
+        let currentPathname = this.props.history.location.pathname
         return(
             <Navbar bg="light" expand="lg">
                 <Navbar.Brand href="/sales">The One Car POS</Navbar.Brand>
@@ -53,7 +50,7 @@ class Header extends React.Component {
                         {
                             this.state.navInfo.map(
                                 (item, idx) => (
-                                    <Nav.Link as={Link} to={item.href} key={idx} className={this.state.currentPathname === item.href ? "active" : ""}>{item.text}</Nav.Link>
+                                    <Nav.Link as={Link} to={item.href} key={idx} className={currentPathname === item.href ? "active" : ""}>{item.text}</Nav.Link>
                                 )
                             )
                         }

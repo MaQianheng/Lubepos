@@ -4,6 +4,7 @@ import $ from "jquery";
 import TableAdd from "./table-add";
 
 export default class CardFormWrapperSales extends React.Component {
+
     handleClick = (e) => {
         $(e.target.nextElementSibling).slideToggle();
         $("#i-angle").toggleClass("rotate-open");
@@ -13,7 +14,8 @@ export default class CardFormWrapperSales extends React.Component {
         return (
             <Card>
                 <i id="i-angle" className="rotate-open"></i>
-                <h5 className="card-header" onClick={this.handleClick} style={{cursor: "pointer"}}>&nbsp;&nbsp;&nbsp;&nbsp;Add a new sales record</h5>
+                <h5 className="card-header" onClick={this.handleClick}
+                    style={{cursor: "pointer"}}>&nbsp;&nbsp;&nbsp;&nbsp;Add a new sales record</h5>
                 <Card.Body>
                     <TableAdd></TableAdd>
                 </Card.Body>
