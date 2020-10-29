@@ -3,6 +3,8 @@ import {login} from "../redux/action"
 import {Button} from "react-bootstrap";
 import {connect} from 'react-redux'
 import MyAlert from "../components/common/my-alert";
+import storageUtils from "../utils/storageUtils"
+import {Redirect} from 'react-router-dom'
 
 // import {Redirect} from 'react-router-dom'
 
@@ -60,15 +62,19 @@ class PageLogin extends React.Component {
         // 发请求redux更新user
         await this.props.login(this.state)
         // 读取新的props.user
-        const {response} = this.props.user
+        const {user} = this.props
         // err_code: 1
         // message: "Username or password is wrong"
-        console.log(response)
-        if (response.err_code === 0) {
+        console.log(user)
+        if (user.err_code === 0) {
+            let {isChecked} = this.state
+            if (isChecked) {
+                storageUtils.saveUserId(user.user._id)
+            }
             this.informAlert("Login success", "success")
             this.props.history.replace('/')
         } else {
-            this.informAlert(`Login fail ${response.message}`, "danger")
+            this.informAlert(`Login fail ${user.message}`, "danger")
         }
         this.setState({isLoading: false})
     }
@@ -81,6 +87,11 @@ class PageLogin extends React.Component {
 
     render() {
         const {isLoading, alert} = this.state
+        const {user} = this.props.user
+        let userid = user ? user._id : storageUtils.getUserId()
+        if (userid) {
+            return <Redirect to='/sales'/>
+        }
         return (
             <div className="container" style={{marginTop: "200px"}}>
                 <div className="card text-center">
@@ -91,7 +102,7 @@ class PageLogin extends React.Component {
                         <div className="container">
                             <div className="panel panel-default">
                                 <div className="panel-heading">
-                                    <h3 className="panel-title">Please sign in</h3>
+                                    <h3 className="panel-title">Please login</h3>
                                 </div>
                                 <div className="panel-body">
                                     <fieldset>

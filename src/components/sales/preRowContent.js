@@ -1,35 +1,27 @@
 import React from "react";
 import {MyDropdown} from "../common/my-dropdown";
+import {connect} from 'react-redux'
 
-export default class PreRowContent extends React.Component {
+class PreRowContent extends React.Component {
     constructor(props) {
         super(props);
-        console.log(this.props.userInput)
         this.state = {
-            idx: this.props.rowIdx,
-            oriAmount: parseInt(this.props.userInput[4]),
-            userInput: this.props.userInput
+            // idx: this.props.rowIdx,
+            // oriAmount: parseInt(this.props.userInput[4]),
+            // userInput: this.props.userInput
         }
     }
 
     handleDropDownChange = (msg, label) => {
         let index
-        let {userInput} = this.state
-        let preMsg = [...this.state.userInput]
+        let {userInput} = this.props
+        let preMsg = [...this.props.userInput]
         switch (label) {
             case "type":
                 index = 0
                 break
             case "items":
                 index = 1
-                // let items
-                // if (this.state.userInput[0] === "products") {
-                //     items = this.props.productsItems
-                // } else {
-                //     items = this.props.servicesItems
-                // }
-                // userInput[2] = items[msg].price ? items[msg].price : 0
-                // userInput[3] = 1
                 break
             default:
                 break
@@ -38,22 +30,11 @@ export default class PreRowContent extends React.Component {
         if (index === 0 && msg !== preMsg[0]) {
             if (msg === "products") {
                 userInput[1] = this.props.productsName[0]
-                // userInput[2] = this.props.productsItems[userInput[1]].price ? this.props.productsItems[userInput[1]].price : 0
-                // userInput[3] = this.props.productsItems[userInput[1]].amount
-                // console.log(userInput)
             } else {
                 userInput[1] = this.props.servicesName[0]
-                // userInput[2] = this.props.servicesItems[userInput[1]].price ? this.props.servicesItems[userInput[1]].price : 0
-                // console.log(userInput)
             }
         }
-        // userInput[3] = 0
-        // userInput[4] = this.state.oriAmount
-        // userInput[5] = parseInt(userInput[2]) * parseInt(userInput[3])
-        // this.setState({
-        //     userInput: userInput
-        // })
-        this.props.transferMsg(preMsg, userInput, this.state.idx)
+        this.props.transferMsg(preMsg, userInput, this.props.rowIdx)
     }
 
     handleChange = (e) => {
@@ -61,34 +42,32 @@ export default class PreRowContent extends React.Component {
         if (value < 0) {
             return
         }
-        if (value==="") {
+        if (!value) {
             return
         }
-        let pre = this.state.userInput
+        let preMsg = [...this.props.userInput]
         const key = e.target.getAttribute('name');
-        let {userInput} = this.state
+        let {userInput} = this.props
+        if (value > userInput[6] && userInput[0] === "products") {
+            return
+        }
         switch (key) {
             case "amount":
                 userInput[3] = value
                 if (userInput[0]==="products") {
-                    userInput[4] = this.props.userInput[4] - parseInt(value)
+                    // 这里要用原剩余数量减
+                    userInput[4] = parseInt(userInput[6])- parseInt(userInput[3])
                 }
                 break
             default:
                 break
         }
-        if (userInput[4] < 0 && userInput[0] === "products") {
-            return
-        }
         userInput[5] = parseInt(userInput[2]) * parseInt(userInput[3])
-        this.setState({
-            userInput: userInput
-        })
-        this.props.transferMsg(pre, userInput, this.state.idx)
+        this.props.transferMsg(preMsg, userInput, this.props.rowIdx)
     }
 
     handleClick = () => {
-        this.props.fromPreRowContentToParent(this.state.idx)
+        this.props.fromPreRowContentToParent(this.props.rowIdx)
     }
 
     render() {
@@ -124,3 +103,8 @@ export default class PreRowContent extends React.Component {
         )
     }
 }
+
+export default connect(
+    state => ({items: state.items}),
+    {}
+)(PreRowContent)

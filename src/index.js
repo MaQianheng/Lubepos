@@ -20,13 +20,14 @@ ReactDOM.render(
     // <React.StrictMode>
     <Provider store={store}>
         <HashRouter>
-            <Route path='/login' component={PageLogin}></Route>
-            <Route component={App}></Route>
-            {/*<App/>*/}
+            <Switch>
+                <Route path='/login' component={PageLogin}></Route>
+                <Route component={App}></Route>
+            </Switch>
         </HashRouter>
     </Provider>,
 // </React.StrictMode>,
-document.getElementById('root')
+    document.getElementById('root')
 )
 ;
 

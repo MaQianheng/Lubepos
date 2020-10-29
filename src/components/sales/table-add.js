@@ -2,10 +2,13 @@ import React from "react";
 import {Table} from "react-bootstrap";
 import PreRowContent from "./preRowContent";
 import MyAlert from "../common/my-alert";
-import {requestItemsQuery, requestSalesInsert} from "../../api";
+import {requestItemsQuery, requestSalesInsert, requestCustomersQuery, requestCarsQuery} from "../../api";
 import MySpinner from "../common/my-spinner";
+import {connect} from 'react-redux'
+import {initItemsData} from "../../redux/action";
+import {MyDropdown} from "../common/my-dropdown";
 
-export default class TableAdd extends React.Component {
+class TableAdd extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -13,11 +16,23 @@ export default class TableAdd extends React.Component {
             type: ["products", "services"],
             productsName: [],
             servicesName: [],
-            // {name: [price, stock]}
+            customersName: [""],
+            customersId: [""],
+            plateNumber: [""],
             products: {},
             services: {},
+            // customers: {customerId: customerName}
+            customers: {},
+            remainingLoad: 3,
+            submitIsLoading: false,
             userInput: [],
-            isLoading: false,
+            currentCustomer: {
+                id: "",
+                name: "",
+                plateNumber: "",
+                brand: "",
+                model: ""
+            },
             isDisableButton: false,
             isVAT: false,
             gross: 0,
@@ -31,12 +46,12 @@ export default class TableAdd extends React.Component {
         }
     }
 
-    componentDidMount() {
-        this.setState({isLoading: true})
+    organisingItems = () => {
         requestItemsQuery({currentPageCount: 0}).then((r) => {
             let {data} = r
             if (data.err_code === 0) {
-                let {products, services, productsName, servicesName} = this.state
+                // let {products, services, productsName, servicesName} = this.state
+                let products = {}, services = {}, productsName = [], servicesName = []
                 for (let i = 0; i < data.items.length; i++) {
                     if (data.items[i].type === "products") {
                         productsName.push(data.items[i].name)
@@ -56,27 +71,221 @@ export default class TableAdd extends React.Component {
                         }
                     }
                 }
+                // this.props.initItemsData({
+                //     products: products,
+                //     services: services,
+                //     productsName: productsName,
+                //     servicesName: servicesName
+                // })
+                let {remainingLoad} = this.state
                 this.setState({
+                    remainingLoad: remainingLoad - 1,
                     products: products,
                     services: services,
                     productsName: productsName,
                     servicesName: servicesName,
-                    isLoading: false
                 })
+            } else {
+                this.requestFail(data.message)
             }
         }).catch((err) => {
-            this.informAlert(`Request data fail ${err}`, "danger")
-            this.setState({
-                isDisableButton: true,
-                isLoading: false
-            })
+            this.requestFail(err)
             console.log(err)
         })
     }
 
+    organisingCustomers = () => {
+        requestCustomersQuery({currentPageCount: 0}).then(async (r) => {
+            let {data} = r
+            if (data.err_code === 0) {
+                let {customers} = data
+                let customersName = []
+                let customersId = []
+                let _customers = {}
+                for (let key in customers) {
+                    customersName.push(customers[key].name)
+                    customersId.push(customers[key]._id)
+                }
+                for (let i = 0; i < customers.length; i++) {
+                    let obj = customers[i]
+                    _customers[obj._id] = {
+                        "name": obj.name
+                    }
+                }
+                console.log(customersName)
+                console.log(customersId)
+                let {remainingLoad} = this.state
+                await this.setState({
+                    remainingLoad: remainingLoad - 1,
+                    customers: _customers,
+                    customersName,
+                    customersId
+                })
+                this.organisingCars()
+            } else {
+                this.requestFail(data.message)
+            }
+        }).catch((err) => {
+            this.requestFail(err)
+            console.log(err)
+        })
+    }
+
+    organisingCars = () => {
+        requestCarsQuery({currentPageCount: 0}).then((r) => {
+            let {data} = r
+            // customers: {
+            //     "customerId1": {
+            //         "name": "xxx",
+            //         "carPlate1": {
+            //             "brand": "xx",
+            //             "model": "xx",
+            //         },
+            //         "carPlate2": {
+            //             "brand": "xx",
+            //             "model": "xx",
+            //         }
+            //     },
+            //     "customerId2": {
+            //         "name": "xxx",
+            //         "carPlate3": {
+            //             "brand": "xx",
+            //             "model": "xx",
+            //         },
+            //         "carPlate4": {
+            //             "brand": "xx",
+            //             "model": "xx",
+            //         }
+            //     },
+            // },
+            if (data.err_code === 0) {
+                let {cars} = data
+                // let customers = {}
+                let {remainingLoad, customersId, customers} = this.state
+                // 如果有customers
+                if (customersId.length > 0) {
+                    // 整理customers对象
+                    for (let i = 0; i < cars.length; i++) {
+                        let obj = cars[i]
+                        // if (!(obj.owner._id in customers)) {
+                        //     customers[obj.owner._id] = {}
+                        // }
+                        // customers[obj.owner._id]["name"] = obj.owner.name
+                        customers[obj.owner._id][obj.plateNumber] = {
+                            "brand": obj.brand,
+                            "model": obj.model
+                        }
+                    }
+                    let plateNumber = this.handleNameChange(customersId[0], customers)
+                    this.setState({
+                        remainingLoad: remainingLoad - 1,
+                        customers,
+                        plateNumber
+                    })
+                    console.log(customers, plateNumber)
+                } else {
+                    this.setState({
+                        remainingLoad: remainingLoad - 1
+                    })
+                }
+            } else {
+                this.requestFail(data.message)
+            }
+        }).catch((err) => {
+            this.requestFail(err)
+            console.log(err)
+        })
+    }
+
+    // setstate异步执行，所以要传入customers
+    handleNameChange = (customerId, customers) => {
+        let plateNumber = []
+        // 判断该customer是否有car
+        let currentCustomerCars = customers[customerId]
+        for (let key in currentCustomerCars) {
+            if (key !== "name") {
+                plateNumber.push(key)
+            }
+        }
+        if (plateNumber.length === 0) {
+            plateNumber.push("")
+        }
+        let {currentCustomer} = this.state
+        currentCustomer.id = customerId
+        currentCustomer.name = customers[customerId].name
+        currentCustomer.plateNumber = plateNumber[0]
+        if (plateNumber[0] !== "") {
+            currentCustomer.brand = customers[customerId][plateNumber[0]].brand
+            currentCustomer.model = customers[customerId][plateNumber[0]].model
+        } else {
+            currentCustomer.brand = ""
+            currentCustomer.model = ""
+        }
+        this.setState({currentCustomer})
+        return plateNumber
+    }
+
+    handlePlateChange = (plateNumber) => {
+        // customers: {
+        //     "customerId1": {
+        //         "name": "xxx",
+        //         "carPlate1": {
+        //             "brand": "xx",
+        //             "model": "xx",
+        //         },
+        //         "carPlate2": {
+        //             "brand": "xx",
+        //             "model": "xx",
+        //         }
+        //     },
+        //     "customerId2": {
+        //         "name": "xxx",
+        //         "carPlate3": {
+        //             "brand": "xx",
+        //             "model": "xx",
+        //         },
+        //         "carPlate4": {
+        //             "brand": "xx",
+        //             "model": "xx",
+        //         }
+        //     },
+        // },
+
+        // currentCustomer: {
+        //     id: "",
+        //     name: "",
+        //     plateNumber: "",
+        //     carBrand: "",
+        //     carModel: ""
+        // }
+        let {currentCustomer, customers} = this.state
+        let customerId = currentCustomer.id
+        let customer = customers[customerId]
+        console.log(customer, plateNumber, currentCustomer)
+        currentCustomer.plateNumber = plateNumber
+        currentCustomer.brand = customer[plateNumber].brand
+        currentCustomer.model = customer[plateNumber].model
+        this.setState({currentCustomer})
+    }
+
+    requestFail = (message) => {
+        this.informAlert(`Request data fail ${message}`, "danger")
+        let {remainingLoad} = this.state
+        this.setState({
+            isDisableButton: true,
+            remainingLoad: remainingLoad - 1
+        })
+    }
+
+    componentDidMount() {
+        // this.setState({remainingLoad: 3})
+        this.organisingItems()
+        this.organisingCustomers()
+        // this.organisingCars()
+    }
+
     componentWillUnmount = () => {
         this.setState = (state, callback) => {
-            return;
         };
     }
 
@@ -167,8 +376,8 @@ export default class TableAdd extends React.Component {
         } else {
             return
         }
-
-        userInput.push([type, name, price, 0, remainingAmount, price * 0])
+        // 6: totalAmount
+        userInput.push([type, name, price, 0, remainingAmount, price * 0, remainingAmount])
         this.filterTheArray(type, name)
         let arr = this.calculateTotalPrice(userInput, this.state.isVAT)
         this.setState({
@@ -183,8 +392,10 @@ export default class TableAdd extends React.Component {
         let itemsId = "",
             itemsName = "",
             amount = "",
+            unitPrice = "",
+            price = "",
             remainingAmount = ""
-        let {userInput, products, services, totalPrice} = this.state
+        let {userInput, products, services, totalPrice, currentCustomer} = this.state
         if (userInput.length === 0) {
             this.informAlert("The form is empty")
             return
@@ -207,35 +418,43 @@ export default class TableAdd extends React.Component {
                     this.informAlert("Please check your data")
                     return
             }
+            unitPrice += `${userInput[i][2]},`
             amount += `${[userInput[i][3]]},`
             remainingAmount += `${[userInput[i][4]]},`
+            price += `${userInput[i][5]},`
+        }
+        if (!currentCustomer.name) {
+            this.informAlert("The customer name is empty")
+            return
         }
         itemsId = itemsId.substring(0, itemsId.length - 1)
         itemsName = itemsName.substring(0, itemsName.length - 1)
         remainingAmount = remainingAmount.substring(0, remainingAmount.length - 1)
         amount = amount.substring(0, amount.length - 1)
+        unitPrice = unitPrice.substring(0, unitPrice.length - 1)
+        price = price.substr(0, price.length - 1)
         let sales = {
-            itemsId, itemsName, amount, remainingAmount, totalPrice
+            itemsId, itemsName, amount, remainingAmount, unitPrice, price, totalPrice, ...currentCustomer
         }
         console.log(sales)
-        this.setState({isLoading: true})
+        this.setState({remainingLoad: 3})
         requestSalesInsert(sales).then((r) => {
             if (r.data.err_code === 0) {
                 this.informAlert("Insert success", "success")
                 let {userInput} = this.state
-                for (let i=0;i<userInput.length;i++) {
+                for (let i = 0; i < userInput.length; i++) {
                     this.rollBackArray(userInput[i][0], userInput[i][1])
                 }
                 userInput.splice(0, userInput.length)
                 this.setState({userInput: userInput, gross: 0, VAT: 0, totalPrice: 0,})
             } else {
                 // 服务器返回错误
-                this.informAlert("Insert fail", "danger")
+                this.requestFail(r.data.message)
             }
-            this.setState({isLoading: false})
+            this.componentDidMount()
+            // this.setState({isLoading: false})
         }).catch((err) => {
-            this.informAlert(`Insert fail ${err}`, "danger")
-            this.setState({isLoading: false})
+            this.requestFail(err)
             console.log(err)
         })
     }
@@ -281,11 +500,11 @@ export default class TableAdd extends React.Component {
         userInput[idx][0] = newMsg[0]
         userInput[idx][1] = newMsg[1]
         if (preMsg[0] === newMsg[0] && preMsg[1] === newMsg[1]) {
-            console.log(newMsg)
             userInput[idx][2] = newMsg[2]
             userInput[idx][3] = newMsg[3]
             userInput[idx][4] = newMsg[4]
             userInput[idx][5] = newMsg[5]
+            userInput[idx][6] = newMsg[6]
         } else {
             // 情况二：下拉更新
             // Unit Price	Amount	Remaining Amount	Total
@@ -293,6 +512,7 @@ export default class TableAdd extends React.Component {
             userInput[idx][3] = 0
             userInput[idx][4] = item[newMsg[1]].amount
             userInput[idx][5] = item[newMsg[1]].price * 0
+            userInput[idx][6] = item[newMsg[1]].amount
             // roll back
             this.rollBackArray(preMsg[0], preMsg[1])
             // filter
@@ -307,10 +527,26 @@ export default class TableAdd extends React.Component {
         })
     }
 
+    handleDropDownChange = (msg, label, id) => {
+        let {customers} = this.state
+        switch (label) {
+            case "owner":
+                let plateNumber = this.handleNameChange(id, customers)
+                this.setState({plateNumber})
+                break
+            case "plate":
+                this.handlePlateChange(msg)
+                break
+            default:
+                break
+        }
+    }
+
     fromPreRowContentToParent = (idx) => {
         let {userInput} = this.state
         this.rollBackArray(userInput[idx][0], userInput[idx][1])
         userInput.splice(idx, 1)
+        console.log(userInput)
         if (userInput.length === 0) {
             this.setState({gross: 0, VAT: 0, totalPrice: 0,})
         }
@@ -331,19 +567,45 @@ export default class TableAdd extends React.Component {
     }
 
     render() {
-        let {userInput, gross, VAT, totalPrice, isDisableButton, isLoading, alert} = this.state
+        let {userInput, gross, VAT, totalPrice, isDisableButton, remainingLoad, alert, currentCustomer, customersId, customersName, carsName, modelsName, plateNumber} = this.state
         return (
             <div>
-                <MySpinner isLoading={isLoading}></MySpinner>
+                <MySpinner isLoading={remainingLoad === 0 ? false : true}></MySpinner>
+                <div className="row">
+                    <div className="col-xl-3">
+                        <MyDropdown transferMsg={(msg, label, id) => this.handleDropDownChange(msg, label, id)}
+                                    dataId={customersId}
+                                    data={customersName} label="owner" value={currentCustomer.name}
+                                    control={true}></MyDropdown>
+                    </div>
+                    <div className="col-xl-3">
+                        <MyDropdown transferMsg={(msg, label) => this.handleDropDownChange(msg, label)}
+                                    data={plateNumber} label="plate" value={currentCustomer.plateNumber}
+                                    control={true}></MyDropdown>
+                    </div>
+                    <div className="col-xl-3">
+                        <MyDropdown transferMsg={(msg, label) => this.handleDropDownChange(msg, label)}
+                                    data={["a", "b"]} label="carBrand" value={currentCustomer.brand} control={true}
+                                    disabled={true}></MyDropdown>
+                    </div>
+                    <div className="col-xl-3">
+                        <MyDropdown transferMsg={(msg, label) => this.handleDropDownChange(msg, label)}
+                                    data={["a", "b"]} label="carModel" value={currentCustomer.model}
+                                    control={true} disabled={true}></MyDropdown>
+                    </div>
+                </div>
+                <br/>
                 <div className="text-right">
-                    <button type="button" className="btn btn-light" style={{marginRight: "20px"}}>SAVE&PRINT</button>
+                    <button type="button" className="btn btn-light" style={{marginRight: "20px"}}>SAVE&PRINT
+                    </button>
                     <button className="btn btn-dark" type="submit" style={{position: "relative"}}
-                            disabled={isLoading ? true : false}
+                            disabled={remainingLoad === 0 ? false : true}
                             onClick={this.handleSubmit}>
-                            <span className={`spinner-border spinner-border-sm fade ${isLoading ? "show" : "d-none"}`}
-                                  role="status" aria-hidden="true" style={{right: "5px", position: "relative"}}></span>
+                            <span
+                                className={`spinner-border spinner-border-sm fade ${remainingLoad === 0 ? "d-none" : "show"}`}
+                                role="status" aria-hidden="true" style={{right: "5px", position: "relative"}}></span>
                         {
-                            isLoading ? "Loading..." : "SAVE"
+                            remainingLoad === 0 ? "SAVE" : "Loading..."
                         }
                     </button>
                 </div>
@@ -395,14 +657,20 @@ export default class TableAdd extends React.Component {
                 </Table>
                 <div>
                     <button type="button" className="btn btn-primary" disabled={isDisableButton}
-                        onClick={this.handleClick}>Add a new row
-                </button>
+                            onClick={this.handleClick}>Add a new row
+                    </button>
                 </div>
                 <br/>
                 <div>
-                    <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp} alertId="alert-table-add"></MyAlert>
+                    <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp}
+                             alertId="alert-table-add"></MyAlert>
                 </div>
             </div>
         )
     }
 }
+
+export default connect(
+    state => ({items: state.items}),
+    {initItemsData}
+)(TableAdd)

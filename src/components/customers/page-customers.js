@@ -93,7 +93,7 @@ class PageCustomer extends React.Component {
                         </MyTable>
                         <br/>
                         <div className="row">
-                            <MyPagination transferMsg={(msg, label) => this.transferMsgFromPagination(msg, label)}
+                            <MyPagination fromPaginationToParent={(msg, label) => this.transferMsgFromPagination(msg, label)}
                                           dataPerPage={10} currentPageCount={this.state.currentPageCount}
                                           dataCount={this.state.customersCount}></MyPagination>
                         </div>

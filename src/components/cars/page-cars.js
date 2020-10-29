@@ -70,21 +70,25 @@ class PageCars extends React.Component {
                 <CardFormWrapperCars
                     fromWrapperToParent={(data) => this.fromWrapperToParent(data)}></CardFormWrapperCars>
                 <br/>
-                <div className="sticky-top" style={{marginBottom: "20px"}}>
-                    <SearchField
-                        fromSearchFieldToParent={(userInput) => this.fromSearchFieldToParent(userInput)}></SearchField>
-                </div>
-                <div className="row row-cols-1 row-cols-md-6">
-                    {
-                        cars.map((car, idx) => (
-                            <CardDetailCars key={idx} data={car}></CardDetailCars>
-                        ))
-                    }
-                </div>
-                <div className="row">
-                    <MyPagination transferMsg={(msg, label) => this.transferMsgFromPagination(msg, label)}
-                                  dataPerPage={18} currentPageCount={this.state.currentPageCount}
-                                  dataCount={this.state.carsCount}></MyPagination>
+                <div className="card">
+                    <div className="card-body">
+                        <div className="sticky-top" style={{marginBottom: "20px"}}>
+                            <SearchField
+                                fromSearchFieldToParent={(userInput) => this.fromSearchFieldToParent(userInput)}></SearchField>
+                        </div>
+                        <div className="row row-cols-1 row-cols-md-6">
+                            {
+                                cars.map((car, idx) => (
+                                    <CardDetailCars key={idx} data={car}></CardDetailCars>
+                                ))
+                            }
+                        </div>
+                        <div className="row">
+                            <MyPagination fromPaginationToParent={(msg, label) => this.transferMsgFromPagination(msg, label)}
+                                          dataPerPage={18} currentPageCount={this.state.currentPageCount}
+                                          dataCount={this.state.carsCount}></MyPagination>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

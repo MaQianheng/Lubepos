@@ -44,34 +44,6 @@ class FormAdd extends React.Component {
         e.preventDefault();
         // const {name, type, brand, amount, price} = this.state.userInput
         const {userInput, alert} = this.state
-        // let validation = false
-        // switch (userInput.type) {
-        //     case "products":
-        //         if (userInput.name === "" || userInput.type === "" || userInput.brand === "" || userInput.amount === "" || userInput.price === "") {
-        //             validation = false
-        //         } else {
-        //             validation = true
-        //         }
-        //         break
-        //     case "services":
-        //         if (userInput.name === "" || userInput.type === "" || userInput.price === "") {
-        //             validation = false
-        //         } else {
-        //             validation = true
-        //         }
-        //         break
-        //     default:
-        //         break
-        // }
-        //
-        // if (!validation) {
-        //     let {alert} = this.state
-        //     alert.type = "warning"
-        //     alert.value = "One or more required fields are empty"
-        //     alert.timeStamp = Date.now()
-        //     this.setState({...this.state, alert: alert})
-        //     return
-        // }
         for (let key in userInput) {
             if (key==="brand" && userInput.type === "services") {
                 continue
@@ -98,7 +70,11 @@ class FormAdd extends React.Component {
                 this.props.fromFormToParent(userInput)
                 userInput.name = ""
                 userInput.brand = ""
-                userInput.amount = ""
+                if (userInput.type === "services") {
+                    userInput.amount = "-1"
+                } else {
+                    userInput.amount = ""
+                }
                 userInput.price = ""
                 alert.type = "success"
                 alert.value = "Insert success"
@@ -121,6 +97,9 @@ class FormAdd extends React.Component {
         if (msg === "services") {
             tmp["brand"] = ""
             tmp["amount"] = -1
+        }
+        if (msg === "products") {
+            tmp["amount"] = ""
         }
         this.setState({...this.state, userInput: tmp})
     }

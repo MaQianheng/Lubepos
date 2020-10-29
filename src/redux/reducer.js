@@ -1,15 +1,15 @@
 import {combineReducers} from "redux";
-import {AUTH_SUCCESS, ERROR_MSG, LOGIN} from "./action-type";
+import {AUTH_SUCCESS, ERROR_MSG, LOGIN, LOGOUT} from "./action-type";
 // import {user} from './action'
 
-const initUser = {
-    response: {}
-}
+const initUser = {}
 
 export const user = (state=initUser, action) => {
     switch (action.type) {
         case LOGIN:
-            return {response: action.data}
+            return {...action.data}
+        case LOGOUT:
+            return initUser
         // case AUTH_SUCCESS:
         //     // const authSuccess = (user) => ({type: AUTH_SUCCESS, data: user})
         //     // action.data -> user
@@ -23,7 +23,19 @@ export const user = (state=initUser, action) => {
     }
 }
 
+const initItems = {}
+
+export const items = (state=initItems, action) => {
+    switch (action.type) {
+        case "init":
+            return {...action.data}
+        default:
+            return state
+    }
+}
+
 // 向外暴露: {user: {}}
 export default combineReducers({
-    user
+    user,
+    items
 })

@@ -119,7 +119,7 @@ class CardFormAdd extends React.Component {
                 this.setState({...this.state, userInput: userInput})
             } else {
                 // 服务器返回错误
-                this.informAlert("Insert fail", "danger")
+                this.informAlert(`Insert fail ${r.data.message}`, "danger")
                 // this.setState({...this.state, isLoading: false})
             }
             this.setState({...this.state, isLoading: false})
@@ -130,14 +130,6 @@ class CardFormAdd extends React.Component {
             this.setState({...this.state, isLoading: false})
             console.log(err)
         })
-        // this.setState(prevState => {
-        //     let alert = Object.assign({}, prevState.alert);
-        //     alert["type"] = "success"
-        //     alert["value"] = "success"
-        //     alert["timeStamp"] = Date.now()
-        //     return {alert};
-        // })
-        // console.log(this.state);
     }
 
     onDrop = (picture) => {
@@ -147,16 +139,15 @@ class CardFormAdd extends React.Component {
         this.setState({...this.state, userInput: userInput});
     }
 
-    requestData = (pageCount) => {
+    requestData = (currentPageCount) => {
         this.setState({isLoading: true})
-        requestCustomersQuery({pageCount}).then((r) => {
+        requestCustomersQuery({currentPageCount}).then((r) => {
             if (r.data.err_code === 0) {
                 let {ownersId, ownersName} = this.state
                 for (let i = 0; i < r.data.customers.length; i++) {
                     ownersId.push(r.data.customers[i]._id)
                     ownersName.push(r.data.customers[i].name)
                 }
-                console.log(ownersId)
                 this.setState({
                     ownersId: ownersId,
                     ownersName: ownersName,
@@ -164,11 +155,12 @@ class CardFormAdd extends React.Component {
                     isLoading: false
                 })
             } else {
+                this.informAlert(`Insert fail ${r.data.message}`, "danger")
             }
         }).catch((err) => {
+            this.informAlert(`Insert fail ${err}`, "danger")
+            this.setState({...this.state, isLoading: false})
             console.log(err)
-            // this.informAlert("Insert success", "success")
-            // this.setState({...this.state, userInput: userInput})
         })
     }
 
@@ -177,7 +169,6 @@ class CardFormAdd extends React.Component {
     }
 
     render() {
-        console.log(this.state)
         const {userInput, colorPreContent, ownersId, ownersName, brandPreContent, modelPreContent, isLoading, alert} = this.state
         return (
             <Form>
