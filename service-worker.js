@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Lubepos/precache-manifest.57090ffbde173c99d5d2467ee1cd8cbe.js"
+  "/Lubepos/precache-manifest.fa8804f3e30575cc723539fe5138d243.js"
 );
 
 self.addEventListener('message', (event) => {
