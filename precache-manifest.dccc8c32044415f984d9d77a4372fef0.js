@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "fc6e1ca60886141a0312b9b08c5f5a82",
+    "revision": "143d312b058231709d4890166587c08a",
     "url": "/Lubepos/index.html"
   },
   {
-    "revision": "50cd1c34e5a29f7d48bf",
+    "revision": "4f8685778b9bccca9a6b",
     "url": "/Lubepos/static/css/2.fed8f406.chunk.css"
   },
   {
-    "revision": "82aefc636a1e9c1bbb75",
+    "revision": "58062bc83ff3b03c0217",
     "url": "/Lubepos/static/css/main.fde7f5a3.chunk.css"
   },
   {
-    "revision": "50cd1c34e5a29f7d48bf",
-    "url": "/Lubepos/static/js/2.f2972799.chunk.js"
+    "revision": "4f8685778b9bccca9a6b",
+    "url": "/Lubepos/static/js/2.768dc806.chunk.js"
   },
   {
     "revision": "3e5f732efef53052724a1ca54f4df059",
-    "url": "/Lubepos/static/js/2.f2972799.chunk.js.LICENSE.txt"
+    "url": "/Lubepos/static/js/2.768dc806.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "82aefc636a1e9c1bbb75",
-    "url": "/Lubepos/static/js/main.8ed90da5.chunk.js"
+    "revision": "58062bc83ff3b03c0217",
+    "url": "/Lubepos/static/js/main.8065c8af.chunk.js"
   },
   {
     "revision": "8f3253f7511ef5ce7c99",
