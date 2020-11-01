@@ -73,7 +73,7 @@ class Header extends React.Component {
         let {isLoading, username} = this.state
         return (
             <Navbar bg="light" expand="lg">
-                <Navbar.Brand href="/sales">The One Car POS</Navbar.Brand>
+                <Navbar.Brand>The One Car POS</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">

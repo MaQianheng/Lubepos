@@ -530,11 +530,11 @@ class TableAdd extends React.Component {
     handleDropDownChange = (msg, label, id) => {
         let {customers} = this.state
         switch (label) {
-            case "owner":
+            case "customer name":
                 let plateNumber = this.handleNameChange(id, customers)
                 this.setState({plateNumber})
                 break
-            case "plate":
+            case "plate number":
                 this.handlePlateChange(msg)
                 break
             default:
@@ -575,22 +575,22 @@ class TableAdd extends React.Component {
                     <div className="col-xl-3">
                         <MyDropdown transferMsg={(msg, label, id) => this.handleDropDownChange(msg, label, id)}
                                     dataId={customersId}
-                                    data={customersName} label="owner" value={currentCustomer.name}
+                                    data={customersName} label="customer name" value={currentCustomer.name}
                                     control={true}></MyDropdown>
                     </div>
                     <div className="col-xl-3">
                         <MyDropdown transferMsg={(msg, label) => this.handleDropDownChange(msg, label)}
-                                    data={plateNumber} label="plate" value={currentCustomer.plateNumber}
+                                    data={plateNumber} label="plate number" value={currentCustomer.plateNumber}
                                     control={true}></MyDropdown>
                     </div>
                     <div className="col-xl-3">
                         <MyDropdown transferMsg={(msg, label) => this.handleDropDownChange(msg, label)}
-                                    data={["a", "b"]} label="carBrand" value={currentCustomer.brand} control={true}
+                                    data={["a", "b"]} label="car brand" value={currentCustomer.brand} control={true}
                                     disabled={true}></MyDropdown>
                     </div>
                     <div className="col-xl-3">
                         <MyDropdown transferMsg={(msg, label) => this.handleDropDownChange(msg, label)}
-                                    data={["a", "b"]} label="carModel" value={currentCustomer.model}
+                                    data={["a", "b"]} label="car model" value={currentCustomer.model}
                                     control={true} disabled={true}></MyDropdown>
                     </div>
                 </div>

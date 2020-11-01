@@ -1,7 +1,4 @@
 import React from 'react';
-// import {Pagination} from "react-bootstrap";
-
-// 每个组件有个prop，prop可以通过'prop.'的方式拿到自定义组件标签里的任一属性
 
 class MyPagination extends React.Component {
     handleClick = (e) => {
@@ -27,9 +24,9 @@ class MyPagination extends React.Component {
         const {currentPageCount, dataCount, dataPerPage} = this.props
         const totalPagesCount = Math.ceil(dataCount / dataPerPage)
         let arr = []
-        if (totalPagesCount<=5) {
-            for (let i=0;i<totalPagesCount;i++) {
-                arr.push(i+1)
+        if (totalPagesCount <= 5) {
+            for (let i = 0; i < totalPagesCount; i++) {
+                arr.push(i + 1)
             }
         } else {
             let startPageCount
@@ -57,22 +54,6 @@ class MyPagination extends React.Component {
             }
         }
         return (
-            // <Pagination>
-            //   {/*<Pagination.First />*/}
-            //   <Pagination.Prev />
-            //   <Pagination.Item>{1}</Pagination.Item>
-            //   {/*<Pagination.Ellipsis />*/}
-            //
-            //   <Pagination.Item>{10}</Pagination.Item>
-            //   <Pagination.Item active>{12}</Pagination.Item>
-            //   <Pagination.Item disabled>{14}</Pagination.Item>
-            //
-            //   {/*<Pagination.Ellipsis />*/}
-            //   <Pagination.Item>{20}</Pagination.Item>
-            //   <Pagination.Next />
-            //   {/*<Pagination.Last />*/}
-            // </Pagination>
-
             <ul className="pagination" style={{margin: "0 auto"}}>
                 <li className={`page-item ${currentPageCount === 1 ? "disabled" : ""}`}>
                     <p className="page-link" role="button" onClick={this.handleClick} name="pre">
@@ -86,26 +67,6 @@ class MyPagination extends React.Component {
                         </li>
                     ))
                 }
-
-                {/*<li className="page-item">*/}
-                {/*    <p className="page-link" role="button">1</p>*/}
-                {/*</li>*/}
-                {/*<li className="page-item">*/}
-                {/*    <p className="page-link" role="button">10</p>*/}
-                {/*</li>*/}
-                {/*<li className="page-item active">*/}
-                {/*    <span className="page-link">*/}
-                {/*        12*/}
-                {/*        <span className="sr-only">(current)</span>*/}
-                {/*    </span>*/}
-                {/*</li>*/}
-                {/*<li className="page-item disabled">*/}
-                {/*    <span className="page-link" disabled="">14</span>*/}
-                {/*</li>*/}
-                {/*<li className="page-item">*/}
-                {/*    <p className="page-link" role="button">20</p>*/}
-                {/*</li>*/}
-
                 <li className={`page-item ${currentPageCount === totalPagesCount ? "disabled" : ""}`}>
                     <p className="page-link" role="button" onClick={this.handleClick} name="nex">
                         ›

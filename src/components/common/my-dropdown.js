@@ -19,7 +19,7 @@ class MyDropdown extends React.Component {
         const userInput = event.target.innerText
         // if (userInput !== this.state.value) {
         // }
-        if (this.props.label === "owner") {
+        if (this.props.label === "owner" || "customer name") {
             this.props.transferMsg(userInput, this.props.label, event.target.getAttribute("data-id"))
         } else {
             this.props.transferMsg(userInput, this.props.label)

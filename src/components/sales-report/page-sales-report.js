@@ -52,6 +52,7 @@ export default class PageSalesReport extends React.Component {
                 // this.setState({
                 //     itemsCount: sales.length
                 // })
+                console.log(r.data)
                 // 第一次请求:
                 if (currentPageCount === 0) {
                     this.organisingChartData(sales)
@@ -124,18 +125,21 @@ export default class PageSalesReport extends React.Component {
         this.requestData(0)
     }
 
-    handleStartDateChange = (value) => {
-        this.setState({startDate: new Date(value.getFullYear(), value.getMonth(), value.getDate())})
+    handleStartDateChange = async (value) => {
+        await this.setState({startDate: new Date(value.getFullYear(), value.getMonth(), value.getDate()), currentPageCount: 1})
+        await this.requestData(1)
     }
 
-    handleEndDateChange = (value) => {
-        this.setState({endDate: new Date(value.getFullYear(), value.getMonth(), value.getDate())})
+    handleEndDateChange = async (value) => {
+        await this.setState({endDate: new Date(value.getFullYear(), value.getMonth(), value.getDate()), currentPageCount: 1})
+        await this.requestData(1)
     }
 
-    handleSubmit = () => {
-        let {currentPageCount} = this.state
-        this.requestData(currentPageCount)
-    }
+    // handleSubmit = async () => {
+    //     // let {currentPageCount} = this.state
+    //     await this.requestData(1)
+    //     this.setState({currentPageCount: 1})
+    // }
 
     toggleModal = () => {
         let {modalShow} = this.state
@@ -163,6 +167,7 @@ export default class PageSalesReport extends React.Component {
         this.setState({isLoading: true})
         msg = parseInt(msg)
         await this.requestData(msg)
+        console.log(msg)
         this.setState({currentPageCount: msg})
     }
 
@@ -244,7 +249,7 @@ export default class PageSalesReport extends React.Component {
                 <div className="card">
                     <div className="card-body">
                         <div className="row text-center" style={{marginBottom: "20px"}}>
-                            <div className="col-lg-4" style={{marginTop: "20px"}}>
+                            <div className="col-lg-6" style={{marginTop: "20px"}}>
                                 {/*最大不能大过今天*/}
                                 start date:&nbsp;
                                 <DatePicker
@@ -256,7 +261,7 @@ export default class PageSalesReport extends React.Component {
                                     value={startDate}
                                 />
                             </div>
-                            <div className="col-lg-4" style={{marginTop: "20px"}}>
+                            <div className="col-lg-6" style={{marginTop: "20px"}}>
                                 {/*最小不能小过起始*/}
                                 end date:&nbsp;
                                 <DatePicker
@@ -269,18 +274,18 @@ export default class PageSalesReport extends React.Component {
                                     value={endDate}
                                 />
                             </div>
-                            <div className="col-lg-4" style={{marginTop: "20px"}}>
-                                <button className="btn btn-primary btn-group-lg" type="submit"
-                                        style={{position: "relative"}}
-                                        disabled={isLoading ? true : false}
-                                        onClick={this.handleSubmit}>
-                            <span className={`spinner-border spinner-border-sm fade ${isLoading ? "show" : "d-none"}`}
-                                  role="status" aria-hidden="true" style={{right: "5px", position: "relative"}}></span>
-                                    {
-                                        isLoading ? "Loading..." : "QUERY"
-                                    }
-                                </button>
-                            </div>
+                            {/*<div className="col-lg-4" style={{marginTop: "20px"}}>*/}
+                            {/*    <button className="btn btn-primary btn-group-lg" type="submit"*/}
+                            {/*            style={{position: "relative"}}*/}
+                            {/*            disabled={isLoading ? true : false}*/}
+                            {/*            onClick={this.handleSubmit}>*/}
+                            {/*<span className={`spinner-border spinner-border-sm fade ${isLoading ? "show" : "d-none"}`}*/}
+                            {/*      role="status" aria-hidden="true" style={{right: "5px", position: "relative"}}></span>*/}
+                            {/*        {*/}
+                            {/*            isLoading ? "Loading..." : "QUERY"*/}
+                            {/*        }*/}
+                            {/*    </button>*/}
+                            {/*</div>*/}
                         </div>
                         <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp}
                                  alertId="alert-sales-table"></MyAlert>
