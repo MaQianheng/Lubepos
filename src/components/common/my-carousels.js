@@ -19,11 +19,13 @@ class MyCarousels extends React.Component {
                             {/*    style={{height: "300px"}}*/}
                             {/*/>*/}
                             <LazyLoadImage
+                                wrapperClassName="img-thumbnail"
                                 style={{minBlockSize: "-webkit-fill-available"}}
                                 alt={data.brand}
                                 effect="blur"
                                 src={`https://e307b1922e60.ngrok.io/images/${item}`} // use normal <img> attributes as props
-                                width="100%"/>
+                                width="100%"
+                            />
                             <Carousel.Caption>
                                 <h3>{data.brand}</h3>
                                 <p>{data.model}</p>

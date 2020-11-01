@@ -101,9 +101,9 @@ class PageLogin extends React.Component {
                     <div className="card-body">
                         <div className="container">
                             <div className="panel panel-default">
-                                <div className="panel-heading">
-                                    <h3 className="panel-title">Please login</h3>
-                                </div>
+                                {/*<div className="panel-heading">*/}
+                                {/*    <h3 className="panel-title">Please login</h3>*/}
+                                {/*</div>*/}
                                 <div className="panel-body">
                                     <fieldset>
                                         <div className="form-group">

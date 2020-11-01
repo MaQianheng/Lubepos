@@ -76,7 +76,7 @@ class PageCars extends React.Component {
                             <SearchField
                                 fromSearchFieldToParent={(userInput) => this.fromSearchFieldToParent(userInput)}></SearchField>
                         </div>
-                        <div className="row row-cols-1 row-cols-md-6">
+                        <div className="row row-cols-1 row-cols-md-4">
                             {
                                 cars.map((car, idx) => (
                                     <CardDetailCars key={idx} data={car}></CardDetailCars>

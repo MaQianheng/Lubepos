@@ -1,8 +1,8 @@
 import React from "react";
 import {Form, Button} from "react-bootstrap";
-import {MyDropdown} from "../common/my-dropdown";
 import MyAlert from "../common/my-alert";
 import {requestItemInsert} from "../../api";
+import Select from 'react-select'
 
 class FormAdd extends React.Component {
     constructor(props) {
@@ -10,7 +10,7 @@ class FormAdd extends React.Component {
         this.state = {
             userInput: {
                 name: "",
-                type: "products",
+                type: {value: "products", label: "products"},
                 brand: "",
                 amount: "",
                 price: ""
@@ -40,23 +40,36 @@ class FormAdd extends React.Component {
         this.setState({...this.state, userInput: tmp})
     }
 
+    handleSelectChange = (value) => {
+        let tmp = this.state.userInput
+        tmp.type = value
+        if (value.value === "services") {
+            tmp["brand"] = ""
+            tmp["amount"] = -1
+        }
+        if (value.value === "products") {
+            tmp["amount"] = ""
+        }
+        this.setState({userInput: tmp})
+        console.log(value)
+    }
+
     handleClick = (e) => {
         e.preventDefault();
         // const {name, type, brand, amount, price} = this.state.userInput
-        const {userInput, alert} = this.state
+        let {userInput, alert} = this.state
         for (let key in userInput) {
-            if (key==="brand" && userInput.type === "services") {
+            if (key === "brand" && userInput.type.value === "services") {
                 continue
             }
-            if (!userInput[key] && userInput.type === "products") {
+            if (!userInput[key]) {
                 this.informAlert("One or more required fields are empty")
                 return
             }
         }
-        if (userInput.type === "products") {
-        }
+        userInput = {...userInput, type: userInput.type.value}
         this.setState({isLoading: true})
-        requestItemInsert(this.state.userInput).then(r => {
+        requestItemInsert(userInput).then(r => {
             this.setState({isLoading: false})
             // insert suc
             if (r.data.err_code === 0) {
@@ -91,18 +104,18 @@ class FormAdd extends React.Component {
         })
     }
 
-    transferMsg = (msg, label) => {
-        let tmp = this.state.userInput
-        tmp[label] = msg
-        if (msg === "services") {
-            tmp["brand"] = ""
-            tmp["amount"] = -1
-        }
-        if (msg === "products") {
-            tmp["amount"] = ""
-        }
-        this.setState({...this.state, userInput: tmp})
-    }
+    // transferMsg = (msg, label) => {
+    //     let tmp = this.state.userInput
+    //     tmp[label] = msg
+    //     if (msg === "services") {
+    //         tmp["brand"] = ""
+    //         tmp["amount"] = -1
+    //     }
+    //     if (msg === "products") {
+    //         tmp["amount"] = ""
+    //     }
+    //     this.setState({...this.state, userInput: tmp})
+    // }
 
     render() {
         const {isLoading, userInput, alert} = this.state
@@ -112,15 +125,28 @@ class FormAdd extends React.Component {
                     <div className="col-6 col-md-3">
                         <Form.Label>Name</Form.Label>
                         <input type="text" className="form-control" style={{textAlign: "left"}}
-                               onChange={this.handleChange} name="name" value={userInput.name}></input>
+                               onChange={this.handleChange} name="name" value={userInput.name} disabled={isLoading}></input>
                     </div>
 
-                    <MyDropdown transferMsg={(msg, label) => this.transferMsg(msg, label)}
-                                data={["products", "services"]} label="type" value={userInput.type}></MyDropdown>
+                    <div className="col-6 col-md-3">
+                        <Form.Label>Type</Form.Label>
+                        <Select
+                            value={userInput.type}
+                            options={[
+                                {value: 'products', label: 'products'},
+                                {value: 'services', label: 'services'}
+                            ]}
+                            isDisabled={isLoading}
+                            onChange={this.handleSelectChange}
+                        />
+                    </div>
+
+                    {/*<MyDropdown transferMsg={(msg, label) => this.transferMsg(msg, label)}*/}
+                    {/*            data={["products", "services"]} label="type" value={userInput.type}></MyDropdown>*/}
 
                     <div className="col-6 col-md-3">
                         <Form.Label>Brand</Form.Label>
-                        <fieldset disabled={userInput.type === "products" ? false : true}>
+                        <fieldset disabled={(userInput.type.value === "products" ? false : true) || isLoading}>
                             <input type="text" className="form-control"
                                    style={{textAlign: "left", transition: "all .3s"}} onChange={this.handleChange}
                                    name="brand" value={userInput.brand}></input>
@@ -129,7 +155,7 @@ class FormAdd extends React.Component {
 
                     <div className="col-6 col-md-3">
                         <Form.Label>Amount</Form.Label>
-                        <fieldset disabled={userInput.type === "products" ? false : true}>
+                        <fieldset disabled={(userInput.type.value === "products" ?  false : true) || isLoading}>
                             <input type="number" className="form-control"
                                    style={{textAlign: "left", transition: "all .3s"}} onChange={this.handleChange}
                                    name="amount" value={userInput.amount}></input>
@@ -139,7 +165,7 @@ class FormAdd extends React.Component {
                     <div className="col-6 col-md-3">
                         <Form.Label>Price</Form.Label>
                         <input type="number" className="form-control" style={{textAlign: "left"}}
-                               onChange={this.handleChange} name="price" value={userInput.price}></input>
+                               onChange={this.handleChange} name="price" value={userInput.price} disabled={isLoading}></input>
                     </div>
 
                     <div className="col-6 col-md-1">
@@ -160,7 +186,8 @@ class FormAdd extends React.Component {
                 </Form.Row>
                 <br/>
                 <Form.Row>
-                    <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp} alertId="alert-items-form"></MyAlert>
+                    <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp}
+                             alertId="alert-items-form"></MyAlert>
                 </Form.Row>
             </Form>
         )

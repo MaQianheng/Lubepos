@@ -1,6 +1,6 @@
 import React from 'react';
 import {Table} from "react-bootstrap";
-import {MyDropdown} from "./my-dropdown";
+import Select from 'react-select'
 import MyAlert from "./my-alert";
 import {
     requestCustomerUpdate,
@@ -8,8 +8,6 @@ import {
     requestItemDelete,
     requestItemUpdate
 } from "../../api";
-
-// 每个组件有个prop，prop可以通过'prop.'的方式拿到自定义组件标签里的任一属性
 
 export class MyTable extends React.Component {
     constructor(props) {
@@ -131,24 +129,24 @@ export class MyTable extends React.Component {
 
     }
 
-    handleDropDownChange = (msg, label) => {
+    handleSelectChange = (value) => {
+        let idx = value.value.split('-').pop()
+
         let {contents} = this.state
         if (contents.length === 0) {
             contents = this.props.contents
         }
-        let operatingContent = contents[label]
-        operatingContent.type = msg
-        if (msg === "services") {
+        let operatingContent = contents[parseInt(idx)]
+        operatingContent.type = value.label
+        if (value.label === "services") {
             operatingContent.amount = -1
             operatingContent.brand = ""
         }
-        if (msg === "products") {
+        if (value.label === "products") {
             operatingContent.amount = 0
             operatingContent.brand = ""
         }
-        this.setState({contents: contents})
-        console.log(operatingContent)
-        console.log(msg, label)
+        this.setState({contents: contents}, () => {console.log(this.state.contents)})
     }
 
     handleChange = (e) => {
@@ -159,7 +157,6 @@ export class MyTable extends React.Component {
         if (contents.length === 0) {
             contents = this.props.contents
         }
-        console.log(contents)
         contents[rowId][columnId] = value
         this.setState({contents: contents})
     }
@@ -191,22 +188,32 @@ export class MyTable extends React.Component {
                             <tr key={idx} idx={idx}>
                                 {
                                     keys.map((key, subIdx) => (
-                                        <td key={subIdx} className="text-center">
+                                        <td key={subIdx}>
                                             {
                                                 key === "type"
                                                     ?
-                                                    <MyDropdown
-                                                        label={idx}
-                                                        transferMsg={(msg, label) => this.handleDropDownChange(msg, label)}
-                                                        data={["products", "services"]} value={item[key]}
-                                                        invisibleLabel={true} control={true}></MyDropdown>
-                                                    :
-                                                    <input
-                                                        type={key === "amount" || key === "price" ? "number" : "text"}
-                                                        className="form-control" name={key}
-                                                        value={item[key]}
-                                                        disabled={(item["type"] === "services" && item[key] === "") || item[key] === -1 || idxIsLoading.indexOf(idx) > -1}
-                                                        onChange={this.handleChange}/>
+                                                    <Select
+                                                        id={idx}
+                                                        value={{value: item[key], label: item[key]}}
+                                                        options={[
+                                                            {value: `products-${idx}`, label: 'products'},
+                                                            {value: `services-${idx}`, label: 'services'},
+                                                        ]}
+                                                        isDisabled={idxIsLoading.indexOf(idx) > -1}
+                                                        onChange={this.handleSelectChange}
+                                                    />
+                                                    // <MyDropdown
+                                                    //     label={idx}
+                                                    //     transferMsg={(msg, label) => this.handleDropDownChange(msg, label)}
+                                                    //     data={["products", "services"]} value={item[key]}
+                                                    //     invisibleLabel={true} control={true}></MyDropdown>
+                                                :
+                                                <input
+                                                type={key === "amount" || key === "price" ? "number" : "text"}
+                                                className="form-control" name={key}
+                                                value={item[key]}
+                                                disabled={(item["type"] === "services" && item[key] === "") || item[key] === -1 || idxIsLoading.indexOf(idx) > -1}
+                                                onChange={this.handleChange}/>
                                             }
                                         </td>
                                     ))

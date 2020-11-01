@@ -393,8 +393,8 @@ class TableAdd extends React.Component {
             itemsName = "",
             amount = "",
             unitPrice = "",
-            price = "",
-            remainingAmount = ""
+            price = ""
+            // remainingAmount = ""
         let {userInput, products, services, totalPrice, currentCustomer} = this.state
         if (userInput.length === 0) {
             this.informAlert("The form is empty")
@@ -420,7 +420,7 @@ class TableAdd extends React.Component {
             }
             unitPrice += `${userInput[i][2]},`
             amount += `${[userInput[i][3]]},`
-            remainingAmount += `${[userInput[i][4]]},`
+            // remainingAmount += `${[userInput[i][4]]},`
             price += `${userInput[i][5]},`
         }
         if (!currentCustomer.name) {
@@ -429,14 +429,13 @@ class TableAdd extends React.Component {
         }
         itemsId = itemsId.substring(0, itemsId.length - 1)
         itemsName = itemsName.substring(0, itemsName.length - 1)
-        remainingAmount = remainingAmount.substring(0, remainingAmount.length - 1)
+        // remainingAmount = remainingAmount.substring(0, remainingAmount.length - 1)
         amount = amount.substring(0, amount.length - 1)
         unitPrice = unitPrice.substring(0, unitPrice.length - 1)
         price = price.substr(0, price.length - 1)
         let sales = {
-            itemsId, itemsName, amount, remainingAmount, unitPrice, price, totalPrice, ...currentCustomer
+            itemsId, itemsName, amount, unitPrice, price, totalPrice, ...currentCustomer
         }
-        console.log(sales)
         this.setState({remainingLoad: 3})
         requestSalesInsert(sales).then((r) => {
             if (r.data.err_code === 0) {
