@@ -1,10 +1,8 @@
 import {requestLogin} from "../api";
-import {ERROR_MSG, AUTH_SUCCESS, LOGIN, LOGOUT} from "./action-type";
-import {init} from "http-proxy-middleware/dist/handlers";
-import {items} from "./reducer";
+import {LOGIN, LOGOUT} from "./action-type";
+// import {init} from "http-proxy-middleware/dist/handlers";
+// import {items} from "./reducer";
 
-const authSuccess = (user) => ({type: AUTH_SUCCESS, data: user})
-const errorMsg = (errMsg) => ({type: ERROR_MSG, data: errMsg})
 const resLogin = (data) => ({type: LOGIN, data: data})
 const resLogout = () => ({type: LOGOUT})
 

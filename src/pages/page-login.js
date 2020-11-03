@@ -5,8 +5,9 @@ import {connect} from 'react-redux'
 import MyAlert from "../components/common/my-alert";
 import storageUtils from "../utils/storageUtils"
 import {Redirect} from 'react-router-dom'
-
-// import {Redirect} from 'react-router-dom'
+import Unsplash, {toJson} from 'unsplash-js'
+import {LazyLoadImage} from 'react-lazy-load-image-component'
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 class PageLogin extends React.Component {
     constructor(props) {
@@ -17,12 +18,31 @@ class PageLogin extends React.Component {
             password: "",
             isChecked: false,
             isLoading: false,
+            key: 0,
+            bgSrc: require("./index.svg"),
             alert: {
                 type: "success",
                 value: "success",
                 timeStamp: Date.now()
             }
         }
+    }
+
+    componentDidMount() {
+        const unsplash = new Unsplash({
+            accessKey: "bwlM1wzrPkZSlj1RXG-MAjNDeSIeV-Gf7nflQ-5hYFU",
+            // Optionally you can also configure a custom header to be sent with every request
+            headers: {
+                "X-Custom-Header": "foo"
+            },
+            // Optionally if using a node-fetch polyfill or a version of fetch which supports the timeout option, you can configure the request timeout for all requests
+            timeout: 500 // values set in ms
+        });
+        unsplash.photos.getRandomPhoto({query: "car", orientation: "landscape"})
+            .then(toJson)
+            .then((json) => {
+                this.setState({bgSrc: json.urls.regular, key: 1})
+            });
     }
 
     componentWillUnmount = () => {
@@ -80,21 +100,36 @@ class PageLogin extends React.Component {
     }
 
     enterTriggerSearch = async (e) => {
-        if(e.keyCode === 13) {
+        if (e.keyCode === 13) {
             await this.handleClick(e)
         }
     }
 
     render() {
-        const {isLoading, alert} = this.state
+        const {isLoading, alert, bgSrc, key} = this.state
         const {user} = this.props.user
         let userid = user ? user._id : storageUtils.getUserId()
         if (userid) {
             return <Redirect to='/sales'/>
         }
         return (
-            <div className="container" style={{marginTop: "200px"}}>
-                <div className="card text-center">
+            <div>
+                <LazyLoadImage
+                    key={key}
+                    wrapperClassName="img-fluid"
+                    style={{
+                        height: "-webkit-fill-available"
+                    }}
+                    effect="blur"
+                    src={bgSrc}
+                    width="100%"
+                />
+                <div className="card text-center" style={{
+                    width: "330px",
+                    position: "absolute",
+                    top: "20%",
+                    left: "calc(50% - 165px)"
+                }}>
                     <div className="card-header">
                         Login
                     </div>

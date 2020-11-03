@@ -1,5 +1,5 @@
 import {combineReducers} from "redux";
-import {AUTH_SUCCESS, ERROR_MSG, LOGIN, LOGOUT} from "./action-type";
+import {LOGIN, LOGOUT} from "./action-type";
 // import {user} from './action'
 
 const initUser = {}

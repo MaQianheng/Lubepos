@@ -18,6 +18,22 @@ class PageItems extends React.Component {
         }
     }
 
+    fromTableToParent = async (action) => {
+        switch (action) {
+            case "REQUEST PREVIOUS":
+                let {currentPageCount} = this.state
+                currentPageCount -= 1
+                if (currentPageCount === 0) {
+                    return
+                }
+                this.setState({currentPageCount})
+                await this.requestData(currentPageCount)
+                break
+            default:
+                break
+        }
+    }
+
     fromWrapperToParent = async (item) => {
         // let tmp = this.state.items
         // tmp.unshift(item)
@@ -68,6 +84,7 @@ class PageItems extends React.Component {
                     <div className="card-body">
                         <MyTable
                             tableRole="items"
+                            fromTableToParent={(action) => this.fromTableToParent(action)}
                             fields={this.state.fields}
                             contents={this.state.items}
                             keys={this.state.keys}

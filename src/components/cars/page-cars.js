@@ -27,7 +27,7 @@ class PageCars extends React.Component {
     }
 
     fromSearchFieldToParent = (userInput) => {
-        userInput.currentPageCount = this.state.currentPageCount
+        userInput.currentPageCount = 1
         this.requestData(userInput)
     }
 
@@ -44,6 +44,7 @@ class PageCars extends React.Component {
         requestCarsQuery(queryCondition).then((r) => {
             if (r.data.err_code === 0) {
                 this.setState({
+                    currentPageCount: 1,
                     cars: r.data.cars,
                     carsCount: r.data.count,
                     isLoading: false

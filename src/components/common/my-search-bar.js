@@ -21,10 +21,10 @@ class MySearchBar extends React.Component {
     }
 
     handleDropDownItemClick = (event) => {
-        const userInput = event.target.innerText
-        if (userInput !== this.state.fields) {
-            this.props.transferMsg(userInput, this.props.label)
-            this.setState({fields: userInput, value: ""})
+        const dropDownItem = event.target.innerText
+        if (dropDownItem !== this.state.fields) {
+            this.props.transferMsg(dropDownItem, "SEARCH FIELD")
+            this.setState({fields: dropDownItem, value: ""})
         }
         $(event.target.parentElement).slideToggle();
     }
@@ -37,13 +37,12 @@ class MySearchBar extends React.Component {
 
     enterTriggerSearch = (e) => {
         if(e.keyCode === 13) {
-            this.props.transferMsg(this.state.value, "search-text")
-            // search-text
+            this.props.transferMsg(this.state.value, "TRIGGER SEARCH")
         }
     }
 
     clickTriggerSearch = () => {
-        this.props.transferMsg(this.state.value, "search-text")
+        this.props.transferMsg(this.state.value, "TRIGGER SEARCH")
     }
 
     render() {

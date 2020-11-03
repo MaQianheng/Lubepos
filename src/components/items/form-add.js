@@ -67,9 +67,9 @@ class FormAdd extends React.Component {
                 return
             }
         }
-        userInput = {...userInput, type: userInput.type.value}
+        let tmp = {...userInput, type: userInput.type.value}
         this.setState({isLoading: true})
-        requestItemInsert(userInput).then(r => {
+        requestItemInsert(tmp).then(r => {
             this.setState({isLoading: false})
             // insert suc
             if (r.data.err_code === 0) {
@@ -83,7 +83,7 @@ class FormAdd extends React.Component {
                 this.props.fromFormToParent(userInput)
                 userInput.name = ""
                 userInput.brand = ""
-                if (userInput.type === "services") {
+                if (userInput.type.value === "services") {
                     userInput.amount = "-1"
                 } else {
                     userInput.amount = ""
@@ -92,7 +92,7 @@ class FormAdd extends React.Component {
                 alert.type = "success"
                 alert.value = "Insert success"
                 alert.timeStamp = Date.now()
-                this.setState({...this.state, userInput: userInput, isLoading: false, alert: alert})
+                this.setState({userInput: userInput, isLoading: false, alert: alert})
             } else {
                 alert.type = "danger"
                 alert.value = `Insert fail ${r.data.message}`

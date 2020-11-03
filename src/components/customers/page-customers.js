@@ -20,18 +20,21 @@ class PageCustomer extends React.Component {
         }
     }
 
-    // fromTableToParent = (idx, action) => {
-    //     switch (action) {
-    //         case "edit":
-    //             break
-    //         case "delete":
-    //             break
-    //         default:
-    //             break
-    //     }
-    //     console.log(this.state.customers[idx])
-    //     console.log(idx, action)
-    // }
+    fromTableToParent = async (action) => {
+        switch (action) {
+            case "REQUEST PREVIOUS":
+                let {currentPageCount} = this.state
+                currentPageCount -= 1
+                if (currentPageCount === 0) {
+                    return
+                }
+                this.setState({currentPageCount})
+                await this.requestData(currentPageCount)
+                break
+            default:
+                break
+        }
+    }
 
     fromWrapperToParent = async (data) => {
         // let tmp = this.state.items
@@ -86,16 +89,17 @@ class PageCustomer extends React.Component {
                     <div className="card-body">
                         <MyTable
                             tableRole="customers"
-                            // fromTableToParent={(idx, action) => this.fromTableToParent(idx, action)}
+                            fromTableToParent={(action) => this.fromTableToParent(action)}
                             fields={this.state.fields}
                             keys={this.state.keys}
                             contents={this.state.customers}>
                         </MyTable>
                         <br/>
                         <div className="row">
-                            <MyPagination fromPaginationToParent={(msg, label) => this.transferMsgFromPagination(msg, label)}
-                                          dataPerPage={10} currentPageCount={this.state.currentPageCount}
-                                          dataCount={this.state.customersCount}></MyPagination>
+                            <MyPagination
+                                fromPaginationToParent={(msg, label) => this.transferMsgFromPagination(msg, label)}
+                                dataPerPage={10} currentPageCount={this.state.currentPageCount}
+                                dataCount={this.state.customersCount}></MyPagination>
                         </div>
                     </div>
                 </div>

@@ -34,6 +34,7 @@ export class MyTable extends React.Component {
     handleClick = (e) => {
         let {idxIsLoading, contents} = this.state
         let rowId = parseInt(e.target.parentElement.parentElement.getAttribute("idx"))
+        console.log(rowId)
         if (contents.length === 0) {
             contents = this.props.contents
         }
@@ -71,7 +72,6 @@ export class MyTable extends React.Component {
             // type: "products"
             // _id: "5f9525e01169084cb2567370"
             let operatingContent = contents[rowId]
-            console.log(operatingContent)
             for (let key in operatingContent) {
                 if (key === "brand" && operatingContent.type === "services") {
                     continue
@@ -108,7 +108,10 @@ export class MyTable extends React.Component {
                 deleteFunc({_id: contents[rowId]._id}).then((r) => {
                     if (r.data.err_code === 0) {
                         this.informAlert("Delete success", "success")
-                        contents = contents.splice(rowId, 1)
+                        contents.splice(rowId, 1)
+                        if (contents.length === 0) {
+                            this.props.fromTableToParent("REQUEST PREVIOUS")
+                        }
                     } else {
                         this.informAlert(`Delete fail ${r.data.message}`, "danger")
                     }
@@ -125,7 +128,6 @@ export class MyTable extends React.Component {
             default:
                 break
         }
-
 
     }
 
@@ -202,11 +204,6 @@ export class MyTable extends React.Component {
                                                         isDisabled={idxIsLoading.indexOf(idx) > -1}
                                                         onChange={this.handleSelectChange}
                                                     />
-                                                    // <MyDropdown
-                                                    //     label={idx}
-                                                    //     transferMsg={(msg, label) => this.handleDropDownChange(msg, label)}
-                                                    //     data={["products", "services"]} value={item[key]}
-                                                    //     invisibleLabel={true} control={true}></MyDropdown>
                                                 :
                                                 <input
                                                 type={key === "amount" || key === "price" ? "number" : "text"}

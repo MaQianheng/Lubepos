@@ -25,6 +25,7 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "store": "^2.0.12",
+    "unsplash-js": "^6.3.0",
     "variables": "^1.0.1"
   },
   "scripts": {

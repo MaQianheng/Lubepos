@@ -1,34 +1,44 @@
 import React from "react";
 import {Button, Form} from "react-bootstrap";
-import {MyDropdown} from "../common/my-dropdown";
 import "../common/my-dropdown.css";
 import jsonData from "../../car_brand_model.json";
 import ImageUploader from 'react-images-upload';
 import MyAlert from "../common/my-alert";
 import {requestCustomersQuery, requestCarInsert} from "../../api";
+import Select from "react-select";
 
 class CardFormAdd extends React.Component {
     constructor(props) {
         super(props);
         let brandPreContent = [];
         Object.keys(jsonData).map((v, i) => {
-            brandPreContent.push(v)
+            brandPreContent.push({value: v, label: v})
         });
         let myDate = new Date();
-        let modelPreContent = jsonData[brandPreContent[0]];
+        let modelPreContent = this.handleModelPreContent(brandPreContent[0].value)
+
         this.state = {
-            colorPreContent: ["WHITE", "BLACK", "PURPLE", "BLUE", "NAVY", "GREEN", "YELLOW", "ORANGE", "RED", "เทา"],
-            ownersId: [],
-            ownersName: [],
-            ownersCount: 0,
+            colorPreContent: [
+                {value: "WHITE", label: "WHITE"},
+                {value: "BLACK", label: "BLACK"},
+                {value: "PURPLE", label: "PURPLE"},
+                {value: "BLUE", label: "BLUE"},
+                {value: "NAVY", label: "NAVY"},
+                {value: "GREEN", label: "GREEN"},
+                {value: "YELLOW", label: "YELLOW"},
+                {value: "ORANGE", label: "ORANGE"},
+                {value: "RED", label: "RED"},
+                {value: "เทา", label: "เทา"}
+            ],
+            // ownersCount: 0,
             brandPreContent: brandPreContent,
             modelPreContent: modelPreContent,
+            ownerPreContent: [],
             userInput: {
                 plateNumber: "",
                 year: myDate.getFullYear(),
-                color: "WHITE",
+                color: "",
                 owner: "",
-                ownerId: "",
                 brand: brandPreContent[0],
                 model: modelPreContent[0],
                 carImages: ""
@@ -42,35 +52,13 @@ class CardFormAdd extends React.Component {
         }
     }
 
-    transferMsg = (msg, label, dataId) => {
-        let key = ""
-        let {userInput} = this.state
-        switch (label) {
-            case "color":
-                key = "color";
-                break;
-            case "owner":
-                key = "owner";
-                userInput.ownerId = dataId
-                this.setState({...this.state, userInput: userInput})
-                break;
-            case "brand":
-                key = "brand";
-                let tmp = jsonData[msg]
-                userInput["model"] = tmp[0]
-                let {state} = this
-                state.userInput = userInput
-                state.modelPreContent = tmp
-                this.setState(state)
-                break;
-            case "model":
-                key = "model";
-                break;
-            default:
-                break;
+    handleModelPreContent = (key) => {
+        let modelPreContent = []
+        for (let i = 0; i < jsonData[key].length; i++) {
+            let tmp = jsonData[key][i]
+            modelPreContent.push({value: tmp, label: tmp})
         }
-        userInput[key] = msg
-        this.setState({...this.state, userInput: userInput})
+        return modelPreContent
     }
 
     informAlert = (value, type) => {
@@ -91,6 +79,45 @@ class CardFormAdd extends React.Component {
         })
     }
 
+    handleColorChange = (v) => {
+        let {userInput} = this.state
+        if (userInput.color === v.value) {
+            return
+        }
+        userInput.color = v.value
+        this.setState({userInput})
+    }
+
+    handleBrandChange = (v) => {
+        let {userInput, modelPreContent} = this.state
+        if (userInput.brand.value === v.value) {
+            return
+        }
+        modelPreContent = this.handleModelPreContent(v.value)
+        userInput.brand = v
+        userInput.model = modelPreContent[0]
+        this.setState({userInput, modelPreContent})
+    }
+
+    handleModelChange = (v) => {
+        let {userInput} = this.state
+        if (userInput.model.value === v.value) {
+            return
+        }
+        userInput.model = v
+        this.setState({userInput})
+    }
+
+    handleOwnerChange = (v) => {
+        let {userInput} = this.state
+        if (userInput.owner === v.value) {
+            return
+        }
+        userInput.owner = v.value
+        this.setState({userInput})
+    }
+
+
     handleClick = (e) => {
         e.preventDefault();
         let {userInput} = this.state
@@ -99,6 +126,8 @@ class CardFormAdd extends React.Component {
             return
         }
         this.setState({isLoading: true})
+        userInput.brand = userInput.brand.value
+        userInput.model = userInput.model.value
         requestCarInsert(userInput).then((r) => {
             if (r.data.err_code === 0) {
                 this.props.fromFormToParent(r.data.car)
@@ -107,27 +136,25 @@ class CardFormAdd extends React.Component {
                 userInput.year = date.getFullYear()
                 userInput.color = "WHITE"
                 userInput.owner = ""
-                userInput.ownerId = ""
-                // userInput.brand = this.brandPreContent[0]
-                // userInput.model = this.modelPreContent[0]
+                userInput.brand = this.brandPreContent[0]
+                userInput.model = this.modelPreContent[0]
                 userInput.carImages = ""
                 let domCloseIcon = document.getElementsByClassName("deleteImage")
                 for (let i = 0; i < domCloseIcon.length; i++) {
                     domCloseIcon[i].click()
                 }
                 this.informAlert("Insert success", "success")
-                this.setState({...this.state, userInput: userInput})
+                this.setState({userInput: userInput})
             } else {
                 // 服务器返回错误
                 this.informAlert(`Insert fail ${r.data.message}`, "danger")
                 // this.setState({...this.state, isLoading: false})
             }
-            this.setState({...this.state, isLoading: false})
-            console.log(this.state)
+            this.setState({isLoading: false})
         }).catch((err) => {
             // 请求返回错误
             this.informAlert(`Insert fail ${err}`, "danger")
-            this.setState({...this.state, isLoading: false})
+            this.setState({isLoading: false})
             console.log(err)
         })
     }
@@ -136,30 +163,29 @@ class CardFormAdd extends React.Component {
         let {userInput} = this.state
         // userInput.carImages = userInput.carImages.concat(picture)
         userInput.carImages = picture
-        this.setState({...this.state, userInput: userInput});
+        this.setState({userInput: userInput});
     }
 
     requestData = (currentPageCount) => {
         this.setState({isLoading: true})
         requestCustomersQuery({currentPageCount}).then((r) => {
             if (r.data.err_code === 0) {
-                let {ownersId, ownersName} = this.state
+                let {ownerPreContent} = this.state
                 for (let i = 0; i < r.data.customers.length; i++) {
-                    ownersId.push(r.data.customers[i]._id)
-                    ownersName.push(r.data.customers[i].name)
+                    ownerPreContent.push({value: r.data.customers[i]._id, label: r.data.customers[i].name})
                 }
+                console.log(ownerPreContent)
                 this.setState({
-                    ownersId: ownersId,
-                    ownersName: ownersName,
-                    ownersCount: r.data.customersCount,
+                    ownerPreContent,
+                    // ownersCount: r.data.customersCount,
                     isLoading: false
                 })
             } else {
-                this.informAlert(`Insert fail ${r.data.message}`, "danger")
+                this.informAlert(`Request customer data fail ${r.data.message}`, "danger")
             }
         }).catch((err) => {
-            this.informAlert(`Insert fail ${err}`, "danger")
-            this.setState({...this.state, isLoading: false})
+            this.informAlert(`Request customer data fail ${err}`, "danger")
+            this.setState({isLoading: false})
             console.log(err)
         })
     }
@@ -169,7 +195,7 @@ class CardFormAdd extends React.Component {
     }
 
     render() {
-        const {userInput, colorPreContent, ownersId, ownersName, brandPreContent, modelPreContent, isLoading, alert} = this.state
+        const {userInput, colorPreContent, brandPreContent, modelPreContent, ownerPreContent, isLoading, alert} = this.state
         return (
             <Form>
                 <div className="row">
@@ -184,15 +210,31 @@ class CardFormAdd extends React.Component {
                         <input type="number" className="form-control" style={{textAlign: "left"}}
                                onChange={this.handleChange} name="year" value={userInput.year}></input>
                     </div>
-                    <MyDropdown transferMsg={(msg, label) => this.transferMsg(msg, label)} data={colorPreContent}
-                                label="color" value={userInput.color}></MyDropdown>
-                    <MyDropdown transferMsg={(msg, label, dataId) => this.transferMsg(msg, label, dataId)}
-                                data={ownersName} dataId={ownersId}
-                                label="owner" value={userInput.owner}></MyDropdown>
-                    <MyDropdown transferMsg={(msg, label) => this.transferMsg(msg, label)} data={brandPreContent}
-                                label="brand" value={userInput.brand}></MyDropdown>
-                    <MyDropdown transferMsg={(msg, label) => this.transferMsg(msg, label)} data={modelPreContent}
-                                label="model" value={userInput.model}></MyDropdown>
+                    <div className="col-6 col-md-3">
+                        <Form.Label>Color</Form.Label>
+                        <Select options={colorPreContent} onChange={this.handleColorChange}/>
+                    </div>
+                    <div className="col-6 col-md-3">
+                        <Form.Label>Brand</Form.Label>
+                        <Select value={userInput.brand} options={brandPreContent} onChange={this.handleBrandChange}/>
+                    </div>
+                    <div className="col-6 col-md-3">
+                        <Form.Label>Model</Form.Label>
+                        <Select value={userInput.model} options={modelPreContent} onChange={this.handleModelChange}/>
+                    </div>
+                    <div className="col-6 col-md-3">
+                        <Form.Label>Owner</Form.Label>
+                        <Select options={ownerPreContent} onChange={this.handleOwnerChange}/>
+                    </div>
+                    {/*<MyDropdown transferMsg={(msg, label) => this.transferMsg(msg, label)} data={colorPreContent}*/}
+                    {/*            label="color" value={userInput.color}></MyDropdown>*/}
+                    {/*<MyDropdown transferMsg={(msg, label, dataId) => this.transferMsg(msg, label, dataId)}*/}
+                    {/*            data={ownersName} dataId={ownersId}*/}
+                    {/*            label="owner" value={userInput.owner}></MyDropdown>*/}
+                    {/*<MyDropdown transferMsg={(msg, label) => this.transferMsg(msg, label)} data={brandPreContent}*/}
+                    {/*            label="brand" value={userInput.brand}></MyDropdown>*/}
+                    {/*<MyDropdown transferMsg={(msg, label) => this.transferMsg(msg, label)} data={modelPreContent}*/}
+                    {/*            label="model" value={userInput.model}></MyDropdown>*/}
                     <div className="col-6 col-md-3">
                     </div>
                     <ImageUploader
@@ -221,7 +263,8 @@ class CardFormAdd extends React.Component {
                 </Form.Row>
                 <br/>
                 <Form.Row>
-                    <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp} alertId="alert-cars-form"></MyAlert>
+                    <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp}
+                             alertId="alert-cars-form"></MyAlert>
                 </Form.Row>
 
             </Form>
