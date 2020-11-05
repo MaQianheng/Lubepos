@@ -19,6 +19,8 @@ export const requestCustomerDelete = (customer) => httpRequest(baseUrl + '/custo
 
 export const requestCarsQuery = (queryCondition) => httpRequest(baseUrl + '/cars/query', queryCondition,'GET')
 export const requestCarInsert = (car) => httpRequest(baseUrl + '/cars/insert', car,'POST')
+export const requestCarUpdate = (car) => httpRequest(baseUrl + '/cars/update', car,'POST')
+export const requestCarDelete = (carId) => httpRequest(baseUrl + '/cars/delete', carId,'GET')
 
 export const requestSalesQuery = (conditions) => httpRequest(baseUrl + '/sales/query', conditions,'GET')
 export const requestSalesInsert = (sales) => httpRequest(baseUrl + '/sales/insert', sales,'GET')

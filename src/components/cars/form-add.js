@@ -41,6 +41,7 @@ class CardFormAdd extends React.Component {
                 owner: "",
                 brand: brandPreContent[0],
                 model: modelPreContent[0],
+                oldCarImagesURLs: [],
                 carImages: ""
             },
             isLoading: false,
@@ -51,6 +52,14 @@ class CardFormAdd extends React.Component {
             }
         }
     }
+
+    // componentWillReceiveProps(nextProps, nextContext) {
+    //     console.log(nextProps)
+    // }
+    //
+    // componentDidUpdate(prevProps, prevState, snapshot) {
+    //     console.log(prevProps)
+    // }
 
     handleModelPreContent = (key) => {
         let modelPreContent = []
@@ -128,16 +137,17 @@ class CardFormAdd extends React.Component {
         this.setState({isLoading: true})
         userInput.brand = userInput.brand.value
         userInput.model = userInput.model.value
+        console.log(userInput)
         requestCarInsert(userInput).then((r) => {
             if (r.data.err_code === 0) {
-                this.props.fromFormToParent(r.data.car)
+                this.props.fromFormToParent("REQUEST DATA", r.data.car)
                 let date = new Date()
                 userInput.plateNumber = ""
                 userInput.year = date.getFullYear()
-                userInput.color = "WHITE"
-                userInput.owner = ""
-                userInput.brand = this.brandPreContent[0]
-                userInput.model = this.modelPreContent[0]
+                // userInput.color = []
+                // userInput.owner = []
+                // userInput.brand = []
+                // userInput.model = []
                 userInput.carImages = ""
                 let domCloseIcon = document.getElementsByClassName("deleteImage")
                 for (let i = 0; i < domCloseIcon.length; i++) {
@@ -174,7 +184,8 @@ class CardFormAdd extends React.Component {
                 for (let i = 0; i < r.data.customers.length; i++) {
                     ownerPreContent.push({value: r.data.customers[i]._id, label: r.data.customers[i].name})
                 }
-                console.log(ownerPreContent)
+                // console.log(ownerPreContent)
+                this.props.fromFormToParent("TRANSFER DATA", ownerPreContent)
                 this.setState({
                     ownerPreContent,
                     // ownersCount: r.data.customersCount,
@@ -202,13 +213,13 @@ class CardFormAdd extends React.Component {
                     <div className="col-6 col-md-3">
                         <Form.Label>Plate Number</Form.Label>
                         <input type="text" className="form-control" style={{textAlign: "left"}}
-                               onChange={this.handleChange} name="plateNumber" value={userInput.plateNumber}></input>
+                               onChange={this.handleChange} name="plateNumber" value={userInput.plateNumber}/>
                     </div>
 
                     <div className="col-6 col-md-3">
                         <Form.Label>Year</Form.Label>
                         <input type="number" className="form-control" style={{textAlign: "left"}}
-                               onChange={this.handleChange} name="year" value={userInput.year}></input>
+                               onChange={this.handleChange} name="year" value={userInput.year}/>
                     </div>
                     <div className="col-6 col-md-3">
                         <Form.Label>Color</Form.Label>
@@ -226,15 +237,6 @@ class CardFormAdd extends React.Component {
                         <Form.Label>Owner</Form.Label>
                         <Select options={ownerPreContent} onChange={this.handleOwnerChange}/>
                     </div>
-                    {/*<MyDropdown transferMsg={(msg, label) => this.transferMsg(msg, label)} data={colorPreContent}*/}
-                    {/*            label="color" value={userInput.color}></MyDropdown>*/}
-                    {/*<MyDropdown transferMsg={(msg, label, dataId) => this.transferMsg(msg, label, dataId)}*/}
-                    {/*            data={ownersName} dataId={ownersId}*/}
-                    {/*            label="owner" value={userInput.owner}></MyDropdown>*/}
-                    {/*<MyDropdown transferMsg={(msg, label) => this.transferMsg(msg, label)} data={brandPreContent}*/}
-                    {/*            label="brand" value={userInput.brand}></MyDropdown>*/}
-                    {/*<MyDropdown transferMsg={(msg, label) => this.transferMsg(msg, label)} data={modelPreContent}*/}
-                    {/*            label="model" value={userInput.model}></MyDropdown>*/}
                     <div className="col-6 col-md-3">
                     </div>
                     <ImageUploader
@@ -246,15 +248,38 @@ class CardFormAdd extends React.Component {
                         maxFileSize={5242880}
                         withPreview={true}
                     />
+                    <div className="row-cols-2">
+                        {/*{*/}
+                        {/*    data.imageURLs*/}
+                        {/*        ?*/}
+                        {/*        data.imageURLs.map((item, idx) => (*/}
+                        {/*            <div className="col" style={{display: "inline-block"}} key={idx}>*/}
+                        {/*                <img src={`http://127.0.0.1:4000/images/${item}`} alt=""*/}
+                        {/*                     className="img-thumbnail"*/}
+                        {/*                     style={{width: "-webkit-fill-available"}}*/}
+                        {/*                />*/}
+                        {/*                <button type="button" className="close" aria-label="Close" style={{*/}
+                        {/*                    position: "absolute",*/}
+                        {/*                    top: "10px",*/}
+                        {/*                    right: "30px"*/}
+                        {/*                }}>*/}
+                        {/*                    <span aria-hidden="true">&times;</span>*/}
+                        {/*                </button>*/}
+                        {/*            </div>*/}
+                        {/*        ))*/}
+                        {/*        :*/}
+                        {/*        null*/}
+                        {/*}*/}
+                    </div>
                 </div>
                 <br/>
                 <Form.Row>
                     <div className="col-6 col-md-1">
                         <Button variant="primary" type="submit" style={{position: "relative"}}
-                                disabled={isLoading ? true : false}
+                                disabled={!!isLoading}
                                 onClick={this.handleClick}>
                             <span className={`spinner-border spinner-border-sm fade ${isLoading ? "show" : "d-none"}`}
-                                  role="status" aria-hidden="true" style={{right: "5px", position: "relative"}}></span>
+                                  role="status" aria-hidden="true" style={{right: "5px", position: "relative"}}/>
                             {
                                 isLoading ? "Loading..." : "Submit"
                             }
@@ -264,7 +289,7 @@ class CardFormAdd extends React.Component {
                 <br/>
                 <Form.Row>
                     <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp}
-                             alertId="alert-cars-form"></MyAlert>
+                             alertId="alert-cars-form"/>
                 </Form.Row>
 
             </Form>

@@ -5,7 +5,7 @@ import MyPagination from "../common/my-pagination";
 import DatePicker from 'react-date-picker';
 import MySpinner from "../common/my-spinner";
 import MyAlert from "../common/my-alert";
-import {Media, Modal, Button, Table, ListGroup} from 'react-bootstrap';
+import {Modal, Button, Table, ListGroup} from 'react-bootstrap';
 import {timeStampToDate} from "../../utils/timeUtils";
 
 export default class PageSalesReport extends React.Component {
@@ -176,10 +176,10 @@ export default class PageSalesReport extends React.Component {
         let date = new Date()
         // const [, ] = React.useState(false);
         function MyVerticallyCenteredModal(props) {
-            let {data} = props
+            let {editingData} = props
             let items
-            if (data) {
-                items = data.items
+            if (editingData) {
+                items = editingData.items
             }
             return (
                 <Modal
@@ -194,18 +194,18 @@ export default class PageSalesReport extends React.Component {
                     </Modal.Header>
                     <h5>
                         <li className="list-group-item list-group-item-info">Customer
-                        Name: {data ? data.name : ""}</li>
+                        Name: {editingData ? editingData.name : ""}</li>
                     </h5>
                     <Modal.Body>
-                        <h4>Date: {data ? timeStampToDate(data.dateTime) : ""}</h4>
+                        <h4>Date: {editingData ? timeStampToDate(editingData.dateTime) : ""}</h4>
                         <ListGroup.Item action variant="light">
-                            Car Brand: {data ? data.brand : ""}
+                            Car Brand: {editingData ? editingData.brand : ""}
                         </ListGroup.Item>
                         <ListGroup.Item action variant="light">
-                            Car Model: {data ? data.model : ""}
+                            Car Model: {editingData ? editingData.model : ""}
                         </ListGroup.Item>
                         <ListGroup.Item action variant="light">
-                            Plate Number: {data ? data.plateNumber : ""}
+                            Plate Number: {editingData ? editingData.plateNumber : ""}
                         </ListGroup.Item>
                         <Table hover responsive className="text-center">
                             <thead>
@@ -229,7 +229,7 @@ export default class PageSalesReport extends React.Component {
                                     ""
                             }
                             <tr>
-                                <td colSpan={3} className="text-right"><b>Total Price: {data ? data.price : ""}</b></td>
+                                <td colSpan={3} className="text-right"><b>Total Price: {editingData ? editingData.price : ""}</b></td>
                             </tr>
                             </tbody>
                         </Table>
@@ -274,18 +274,6 @@ export default class PageSalesReport extends React.Component {
                                     value={endDate}
                                 />
                             </div>
-                            {/*<div className="col-lg-4" style={{marginTop: "20px"}}>*/}
-                            {/*    <button className="btn btn-primary btn-group-lg" type="submit"*/}
-                            {/*            style={{position: "relative"}}*/}
-                            {/*            disabled={isLoading ? true : false}*/}
-                            {/*            onClick={this.handleSubmit}>*/}
-                            {/*<span className={`spinner-border spinner-border-sm fade ${isLoading ? "show" : "d-none"}`}*/}
-                            {/*      role="status" aria-hidden="true" style={{right: "5px", position: "relative"}}></span>*/}
-                            {/*        {*/}
-                            {/*            isLoading ? "Loading..." : "QUERY"*/}
-                            {/*        }*/}
-                            {/*    </button>*/}
-                            {/*</div>*/}
                         </div>
                         <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp}
                                  alertId="alert-sales-table"></MyAlert>
@@ -316,7 +304,7 @@ export default class PageSalesReport extends React.Component {
                             </tbody>
                         </Table>
                         <MyVerticallyCenteredModal
-                            data={items[currentRow]}
+                            editingData={items[currentRow]}
                             show={modalShow}
                             onHide={this.handleModalHide}
                         />

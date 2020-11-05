@@ -46,9 +46,7 @@ class PageLogin extends React.Component {
     }
 
     componentWillUnmount = () => {
-        this.setState = (state, callback) => {
-            return;
-        };
+        this.setState = (state, callback) => {};
     }
 
     informAlert = (value, type) => {
@@ -63,7 +61,7 @@ class PageLogin extends React.Component {
         let key = e.target.getAttribute("name")
         let value = e.target.value
         if (key === "isChecked") {
-            value = this.state.isChecked ? false : true
+            value = !this.state.isChecked
         }
         this.setState({[key]: value})
     }

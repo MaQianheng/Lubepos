@@ -13,11 +13,11 @@ export default class CardFormWrapperSales extends React.Component {
     render() {
         return (
             <Card>
-                <i id="i-angle" className="rotate-open"></i>
+                <i id="i-angle" className="rotate-open"/>
                 <h5 className="card-header" onClick={this.handleClick}
                     style={{cursor: "pointer"}}>&nbsp;&nbsp;&nbsp;&nbsp;Add a new sales record</h5>
                 <Card.Body>
-                    <TableAdd></TableAdd>
+                    <TableAdd/>
                 </Card.Body>
             </Card>
         );

@@ -8,6 +8,8 @@ import {connect} from 'react-redux'
 import {initItemsData} from "../../redux/action";
 import CustomerInfo from "./customer-info";
 import {compare} from "../../utils/normalUtils";
+import ReactToPrint from 'react-to-print';
+import ComponentToPrint from "./component-to-print";
 
 class TableAdd extends React.Component {
     constructor(props) {
@@ -31,11 +33,13 @@ class TableAdd extends React.Component {
             remainingLoad: 1,
             submitIsLoading: false,
             userInput: [],
+            tmpUserInput: [],
             isDisableButton: false,
             isVAT: false,
             gross: 0,
             VAT: 0,
             totalPrice: 0,
+            componentToPrintIsDisplay: false,
             alert: {
                 type: "success",
                 value: "success",
@@ -385,23 +389,48 @@ class TableAdd extends React.Component {
         })
     }
 
+    test = () => {
+        console.log(1)
+    }
+
     render() {
-        let {userInput, gross, VAT, totalPrice, isDisableButton, remainingLoad, alert} = this.state
+        let {userInput, tmpUserInput, gross, VAT, totalPrice, isDisableButton, remainingLoad, alert, componentToPrintIsDisplay} = this.state
         return (
             <div>
-                <MySpinner isLoading={remainingLoad === 0 ? false : true}></MySpinner>
+                <MySpinner isLoading={remainingLoad !== 0}/>
                 <CustomerInfo
                     fromCustomerInfoTransferMsgToParent={(customerInfo) => this.fromCustomerInfoTransferMsgToParent(customerInfo)}/>
                 <br/>
                 <div className="text-right">
-                    <button type="button" className="btn btn-light" style={{marginRight: "20px"}}>SAVE&PRINT
-                    </button>
+                    <ReactToPrint
+                        onBeforePrint={() => {
+                            this.handleSubmit()
+                            // tmpUserInput = [...userInput]
+                            // componentToPrintIsDisplay = true
+                        }}
+                        onAfterPrint={() => {
+                            // componentToPrintIsDisplay = false
+                        }}
+                        trigger={() => (
+                            <button type="button" className="btn btn-light" style={{marginRight: "20px"}}
+                                    disabled={remainingLoad !== 0}
+                            >
+                            <span
+                                className={`spinner-border spinner-border-sm fade ${remainingLoad === 0 ? "d-none" : "show"}`}
+                                role="status" aria-hidden="true" style={{right: "5px", position: "relative"}}/>
+                                {
+                                    remainingLoad === 0 ? "SAVE&PRINT" : "Loading..."
+                                }
+                            </button>
+                        )}
+                        content={() => this.componentRef}
+                    />
                     <button className="btn btn-dark" type="submit" style={{position: "relative"}}
-                            disabled={remainingLoad === 0 ? false : true}
+                            disabled={remainingLoad !== 0}
                             onClick={this.handleSubmit}>
                             <span
                                 className={`spinner-border spinner-border-sm fade ${remainingLoad === 0 ? "d-none" : "show"}`}
-                                role="status" aria-hidden="true" style={{right: "5px", position: "relative"}}></span>
+                                role="status" aria-hidden="true" style={{right: "5px", position: "relative"}}/>
                         {
                             remainingLoad === 0 ? "SAVE" : "Loading..."
                         }
@@ -431,7 +460,7 @@ class TableAdd extends React.Component {
                                                servicesName={this.state.servicesName}
                                                productsItems={this.state.products}
                                                servicesItems={this.state.services}
-                                               userInput={item}></PreRowContent>
+                                               userInput={item}/>
                             )
                         )
                     }
@@ -460,8 +489,9 @@ class TableAdd extends React.Component {
                 <br/>
                 <div>
                     <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp}
-                             alertId="alert-table-add"></MyAlert>
+                             alertId="alert-table-add"/>
                 </div>
+                <ComponentToPrint userInput={userInput} gross={gross} VAT={VAT} totalPrice={totalPrice} ref={el => (this.componentRef = el)}/>
             </div>
         )
     }
