@@ -2,6 +2,7 @@ import React from "react";
 import {Carousel} from "react-bootstrap";
 import {LazyLoadImage} from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import {baseUrl} from "../../api";
 
 class MyCarousels extends React.Component {
 
@@ -23,8 +24,8 @@ class MyCarousels extends React.Component {
                                 style={{minBlockSize: "-webkit-fill-available"}}
                                 alt={data.brand}
                                 effect="blur"
-                                src={`http://127.0.0.1:4000/images/${item}`}
-                                // src={`https://e307b1922e60.ngrok.io/images/${item}`} // use normal <img> attributes as props
+                                // src={`http://127.0.0.1:4000/images/${item}`}
+                                src={`${baseUrl}/images/${item}`} // use normal <img> attributes as props
                                 width="100%"
                             />
                             <Carousel.Caption>

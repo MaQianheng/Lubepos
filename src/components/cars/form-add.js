@@ -281,7 +281,7 @@ class CardFormAdd extends React.Component {
                             <span className={`spinner-border spinner-border-sm fade ${isLoading ? "show" : "d-none"}`}
                                   role="status" aria-hidden="true" style={{right: "5px", position: "relative"}}/>
                             {
-                                isLoading ? "Loading..." : "Submit"
+                                isLoading ? "Loading..." : "Save"
                             }
                         </Button>
                     </div>

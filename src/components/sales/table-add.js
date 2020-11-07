@@ -355,7 +355,7 @@ class TableAdd extends React.Component {
         let tmp = {
             id: customerInfo.customer.value,
             name: customerInfo.customer.label,
-            plateNumber: customerInfo.plateNumber.value,
+            plateNumber: customerInfo.plateNumber.value ? customerInfo.plateNumber.value : "",
             brand: customerInfo.brand.value,
             model: customerInfo.model.value
         }

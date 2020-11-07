@@ -3,7 +3,7 @@ import Select from "react-select";
 import ImageUploader from 'react-images-upload';
 import React from "react";
 import jsonData from "../../car_brand_model.json";
-import {requestCarUpdate} from "../../api";
+import {baseUrl, requestCarUpdate} from "../../api";
 import MyAlert from "./my-alert";
 
 export default class MyVerticallyCenteredModal extends React.Component {
@@ -195,7 +195,7 @@ export default class MyVerticallyCenteredModal extends React.Component {
                                 ?
                                 editingData.imageURLs.map((item, idx) => (
                                     <div className="col" style={{display: "inline-block"}} key={idx}>
-                                        <img src={`http://127.0.0.1:4000/images/${item}`} alt=""
+                                        <img src={`${baseUrl}/images/${item}`} alt=""
                                              className="img-thumbnail"
                                              style={{width: "-webkit-fill-available"}}
                                         />
