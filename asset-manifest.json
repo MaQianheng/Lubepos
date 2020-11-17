@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/Lubepos/static/css/main.92b3846d.chunk.css",
-    "main.js": "/Lubepos/static/js/main.c9132a1c.chunk.js",
-    "main.js.map": "/Lubepos/static/js/main.c9132a1c.chunk.js.map",
+    "main.js": "/Lubepos/static/js/main.c7598b65.chunk.js",
+    "main.js.map": "/Lubepos/static/js/main.c7598b65.chunk.js.map",
     "runtime-main.js": "/Lubepos/static/js/runtime-main.aedf355d.js",
     "runtime-main.js.map": "/Lubepos/static/js/runtime-main.aedf355d.js.map",
     "static/css/2.fed8f406.chunk.css": "/Lubepos/static/css/2.fed8f406.chunk.css",
     "static/js/2.6947d566.chunk.js": "/Lubepos/static/js/2.6947d566.chunk.js",
     "static/js/2.6947d566.chunk.js.map": "/Lubepos/static/js/2.6947d566.chunk.js.map",
     "index.html": "/Lubepos/index.html",
-    "precache-manifest.5d1e5a0e69f973ec27fa2f86b71285d2.js": "/Lubepos/precache-manifest.5d1e5a0e69f973ec27fa2f86b71285d2.js",
+    "precache-manifest.54256d6c3d5d911a98832c3592233dca.js": "/Lubepos/precache-manifest.54256d6c3d5d911a98832c3592233dca.js",
     "service-worker.js": "/Lubepos/service-worker.js",
     "static/css/2.fed8f406.chunk.css.map": "/Lubepos/static/css/2.fed8f406.chunk.css.map",
     "static/css/main.92b3846d.chunk.css.map": "/Lubepos/static/css/main.92b3846d.chunk.css.map",
@@ -24,6 +24,6 @@
     "static/css/2.fed8f406.chunk.css",
     "static/js/2.6947d566.chunk.js",
     "static/css/main.92b3846d.chunk.css",
-    "static/js/main.c9132a1c.chunk.js"
+    "static/js/main.c7598b65.chunk.js"
   ]
 }
