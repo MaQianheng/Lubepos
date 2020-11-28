@@ -13,7 +13,6 @@ export class MyTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            contents: this.props.contents,
             idxIsLoading: [],
             alert: {
                 type: "success",
@@ -32,12 +31,15 @@ export class MyTable extends React.Component {
     }
 
     handleClick = (e) => {
-        let {idxIsLoading, contents} = this.state
+        let {idxIsLoading} = this.state
         let rowId = parseInt(e.target.parentElement.parentElement.getAttribute("idx"))
         console.log(rowId)
-        if (contents.length === 0) {
-            contents = this.props.contents
-        }
+        // if (contents.length === 0) {
+        //     contents = this.props.contents
+        // }
+
+        let {contents} = this.props
+
         // if (contents.length === 0) {
         //     this.informAlert("Value no change")
         //     return
@@ -52,6 +54,7 @@ export class MyTable extends React.Component {
                     return
                 }
             }
+            console.log(operatingContent)
             let rePhone = /^(09)\d{8}$/;
             if (!rePhone.test(operatingContent.phone)) {
                 this.informAlert("Phone number format is not correct")
@@ -134,10 +137,13 @@ export class MyTable extends React.Component {
     handleSelectChange = (value) => {
         let idx = value.value.split('-').pop()
 
-        let {contents} = this.state
-        if (contents.length === 0) {
-            contents = this.props.contents
-        }
+        // let {contents} = this.state
+        // if (contents.length === 0) {
+        //     contents = this.props.contents
+        // }
+
+        let {contents} = this.props
+
         let operatingContent = contents[parseInt(idx)]
         operatingContent.type = value.label
         if (value.label === "services") {
@@ -155,10 +161,15 @@ export class MyTable extends React.Component {
         let rowId = e.target.parentElement.parentElement.getAttribute("idx")
         let columnId = e.target.getAttribute("name")
         let value = e.target.value
-        let {contents} = this.state
-        if (contents.length === 0) {
-            contents = this.props.contents
-        }
+        // let {contents} = this.state
+        // if (contents.length === 0) {
+        //     contents = this.props.contents
+        // }
+
+        let {contents} = this.props
+
+        console.log(this.props.contents)
+        console.log(contents, rowId)
         contents[rowId][columnId] = value
         this.setState({contents: contents})
     }
@@ -170,7 +181,7 @@ export class MyTable extends React.Component {
             <div>
                 <div className="form-row">
                     <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp}
-                             alertId="alert-my-table"></MyAlert>
+                             alertId="alert-my-table"/>
                 </div>
                 <Table hover responsive>
                     <thead>

@@ -1,6 +1,7 @@
 import httpRequest from "./HTTP";
 // http://34.126.86.176:4000
-export const baseUrl = "https://e307b1922e60.ngrok.io"
+// export const baseUrl = "https://be285437d77c.ngrok.io"
+export const baseUrl = "http://127.0.0.1:4000"
 // let baseUrl = "http://127.0.0.1:4000"
 
 export const requestRegister = (user) => httpRequest(baseUrl + '/users/register', user, 'POST')

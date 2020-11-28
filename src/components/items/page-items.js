@@ -75,7 +75,7 @@ class PageItems extends React.Component {
     render() {
         return (
             <div style={{padding: "30px"}}>
-                <MySpinner isLoading={this.state.isLoading}></MySpinner>
+                <MySpinner isLoading={this.state.isLoading}/>
                 <CardFormWrapperItems
                     fromWrapperToParent={(item) => this.fromWrapperToParent(item)}>
                 </CardFormWrapperItems>
@@ -88,12 +88,12 @@ class PageItems extends React.Component {
                             fields={this.state.fields}
                             contents={this.state.items}
                             keys={this.state.keys}
-                        ></MyTable>
+                        />
                         <div className="row">
                             <MyPagination fromPaginationToParent={(msg) => this.transferMsgFromPagination(msg)}
                                           dataPerPage={10}
                                           currentPageCount={this.state.currentPageCount}
-                                          dataCount={this.state.itemsCount}></MyPagination>
+                                          dataCount={this.state.itemsCount}/>
                         </div>
                     </div>
                 </div>

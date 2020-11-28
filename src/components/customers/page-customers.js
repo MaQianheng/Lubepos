@@ -78,7 +78,7 @@ class PageCustomer extends React.Component {
     render() {
         return (
             <div style={{padding: "30px"}}>
-                <MySpinner isLoading={this.state.isLoading}></MySpinner>
+                <MySpinner isLoading={this.state.isLoading}/>
                 <CardFormWrapperCustomers
                     cardTitle={this.state.cardTitle}
                     fromWrapperToParent={(data) => this.fromWrapperToParent(data)}>
@@ -92,14 +92,13 @@ class PageCustomer extends React.Component {
                             fromTableToParent={(action) => this.fromTableToParent(action)}
                             fields={this.state.fields}
                             keys={this.state.keys}
-                            contents={this.state.customers}>
-                        </MyTable>
+                            contents={this.state.customers}/>
                         <br/>
                         <div className="row">
                             <MyPagination
                                 fromPaginationToParent={(msg, label) => this.transferMsgFromPagination(msg, label)}
                                 dataPerPage={10} currentPageCount={this.state.currentPageCount}
-                                dataCount={this.state.customersCount}></MyPagination>
+                                dataCount={this.state.customersCount}/>
                         </div>
                     </div>
                 </div>

@@ -49,12 +49,14 @@ class PreRowContent extends React.Component {
             return
         }
         let {userInput} = this.props
-        if (value > userInput[6] && userInput[0] === "products") {
+        if (value > userInput[6] && userInput[0].value === "products") {
             return
         }
         userInput[3] = value
         // 这里要用原剩余数量减
-        userInput[4] = parseInt(userInput[6])- parseInt(userInput[3])
+        if (userInput[0].value === "products") {
+            userInput[4] = parseInt(userInput[6])- parseInt(userInput[3])
+        }
         userInput[5] = parseInt(userInput[2]) * parseInt(userInput[3])
         this.props.fromPreRowContentTransferMsgToParent("UPDATE AMOUNT", userInput, this.props.rowIdx)
     }

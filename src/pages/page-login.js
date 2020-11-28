@@ -78,7 +78,13 @@ class PageLogin extends React.Component {
         }
         this.setState({isLoading: true})
         // 发请求redux更新user
-        await this.props.login(this.state)
+        try {
+            await this.props.login({username, password})
+        } catch (err) {
+            this.informAlert(`Login fail ${err}, can not connect to server`, "danger")
+            this.setState({isLoading: false})
+            return
+        }
         // 读取新的props.user
         const {user} = this.props
         // err_code: 1
@@ -163,12 +169,12 @@ class PageLogin extends React.Component {
                                         <Button className="btn btn-lg btn-block" variant="primary" type="submit"
                                                 name="login"
                                                 style={{position: "relative"}}
-                                                disabled={isLoading ? true : false}
+                                                disabled={!!isLoading}
                                                 onClick={this.handleClick}>
                                             <span
                                                 className={`spinner-border spinner-border-sm fade ${isLoading ? "show" : "d-none"}`}
                                                 role="status" aria-hidden="true"
-                                                style={{right: "5px", position: "relative"}}></span>
+                                                style={{right: "5px", position: "relative"}}/>
                                             {
                                                 isLoading ? "Loading..." : "Login"
                                             }
@@ -176,12 +182,12 @@ class PageLogin extends React.Component {
                                         <Button className="btn btn-lg btn-block" variant="success" type="submit"
                                                 name="guest"
                                                 style={{position: "relative"}}
-                                                disabled={isLoading ? true : false}
+                                                disabled={!!isLoading}
                                                 onClick={this.handleClick}>
                                             <span
                                                 className={`spinner-border spinner-border-sm fade ${isLoading ? "show" : "d-none"}`}
                                                 role="status" aria-hidden="true"
-                                                style={{right: "5px", position: "relative"}}></span>
+                                                style={{right: "5px", position: "relative"}}/>
                                             {
                                                 isLoading ? "Loading..." : "Login as guest"
                                             }
@@ -191,7 +197,7 @@ class PageLogin extends React.Component {
                                     </fieldset>
                                     <br/>
                                     <MyAlert type={alert.type} value={alert.value} timeStamp={alert.timeStamp}
-                                             alertId="alert-login-form"></MyAlert>
+                                             alertId="alert-login-form"/>
                                 </div>
                             </div>
                         </div>
