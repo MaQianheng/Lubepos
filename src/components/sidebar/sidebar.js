@@ -34,7 +34,7 @@ class Sidebar extends React.Component {
 
     componentWillMount() {
         let currentPathname = this.props.history.location.pathname
-        if (currentPathname == "/") {
+        if (currentPathname === "/") {
             currentPathname = "/sales"
             this.props.history.push("/sales")
         }
@@ -54,7 +54,7 @@ class Sidebar extends React.Component {
             <div className="sidebar">
                 <div className="logo">
                     <div className="row">
-                        <div className="col-4"></div>
+                        <div className="col-4"/>
                         <Nav.Item className="col-8">
                             <NavLink as={Link} to="/sales">The One Car POS</NavLink>
                         </Nav.Item>
@@ -66,7 +66,7 @@ class Sidebar extends React.Component {
                     {
                         this.state.navInfo.map(
                             (item, idx) => (
-                                <NavLink as={Link} to={item.href} key={idx} className={this.state.currentPathname == item.href ? "active" : ""}>{item.text}</NavLink>
+                                <NavLink as={Link} to={item.href} key={idx} className={this.state.currentPathname === item.href ? "active" : ""}>{item.text}</NavLink>
                             )
                         )
                     }

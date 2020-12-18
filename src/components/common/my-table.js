@@ -229,24 +229,24 @@ export class MyTable extends React.Component {
                                 <td className="text-center">
                                     <button type="button" className="btn btn-primary" style={{marginRight: "20px"}}
                                             name="update"
-                                            disabled={idxIsLoading.indexOf(idx) > -1 ? true : false}
+                                            disabled={idxIsLoading.indexOf(idx) > -1}
                                             onClick={this.handleClick}>
                                         <span
                                             className={`spinner-border spinner-border-sm fade ${idxIsLoading.indexOf(idx) > -1 ? "show" : "d-none"}`}
                                             role="status" aria-hidden="true"
-                                            style={{right: "5px", position: "relative"}}></span>
+                                            style={{right: "5px", position: "relative"}}/>
                                         {
                                             idxIsLoading.indexOf(idx) > -1 ? "Loading..." : "Update"
                                         }
                                     </button>
                                     <button type="button" className="btn btn-danger" style={{marginRight: "20px"}}
                                             name="delete"
-                                            disabled={idxIsLoading.indexOf(idx) > -1 ? true : false}
+                                            disabled={idxIsLoading.indexOf(idx) > -1}
                                             onClick={this.handleClick}>
                                         <span
                                             className={`spinner-border spinner-border-sm fade ${idxIsLoading.indexOf(idx) > -1 ? "show" : "d-none"}`}
                                             role="status" aria-hidden="true"
-                                            style={{right: "5px", position: "relative"}}></span>
+                                            style={{right: "5px", position: "relative"}}/>
                                         {
                                             idxIsLoading.indexOf(idx) > -1 ? "Loading..." : "Delete"
                                         }

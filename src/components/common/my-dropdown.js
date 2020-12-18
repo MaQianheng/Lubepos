@@ -35,7 +35,7 @@ class MyDropdown extends React.Component {
                 {invisibleLabel ? null : <Form.Label>{label}</Form.Label>}
                 <button
                     className={`btn btn-primary dropdown-toggle form-control ${invisibleLabel ? "invisible-label-button-after" : ""}`}
-                    onClick={this.handleDropDownClick} disabled={this.props.disabled ? true : false}>{value}</button>
+                    onClick={this.handleDropDownClick} disabled={!!this.props.disabled}>{value}</button>
                 <ul className="dropdown-menu" id={invisibleLabel ? "invisible-label-ul" : ""}
                     style={{height: data.length >= 5 ? 180 : data.length * 40}}>
                     {
